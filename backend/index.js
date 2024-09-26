@@ -1,9 +1,13 @@
 import express from 'express';
-import { configDotenv } from "dotenv";
+import dotenv from "dotenv";
 import cors from 'cors'
+dotenv.config();
+//cors.config()
 
+const PORT=5000 || process.env.PORT;
 
 const app=express();
-app.listen(5000,()=>{
-    console.log('Server is runing on `${PORT}`');
+app.listen(PORT,()=>{
+  
+    console.log(`Server is runing on PORT ${PORT}`);
 })
