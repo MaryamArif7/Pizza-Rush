@@ -1,4 +1,4 @@
-import React from "react";
+
 import pizza1 from '../assets/pizza-1.png';
 import pizza4 from '../assets/pizza-4.png';
 

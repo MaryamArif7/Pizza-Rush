@@ -18,10 +18,13 @@
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "jsonwebtoken": "^9.0.2",
+    "mailgen": "^2.0.28",
     "mailtrap": "^3.4.0",
     "mongodb": "^6.9.0",
+    "mongodb-memory-server": "^10.0.1",
     "mongoose": "^8.4.1",
-    "multer": "^1.4.5-lts.1"
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.15"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
