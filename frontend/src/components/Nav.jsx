@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo-7.png';
 
+
 const Nav = () => {
   return (
     <div className=' flex justify-between items-center px-10 font-medium text-lg'>

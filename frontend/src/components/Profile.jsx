@@ -7,9 +7,6 @@ import useFetch from '../hooks/fetch.hook';
 import { updateUser } from '../helper/helper'
 import { useNavigate } from 'react-router-dom'
 
-import styles from '../styles/Username.module.css';
-import extend from '../styles/Profile.module.css'
-
 export default function Profile() {
 
   const [file, setFile] = useState();
@@ -62,7 +59,7 @@ export default function Profile() {
       <Toaster position='top-center' reverseOrder={false}></Toaster>
 
       <div className='flex justify-center items-center h-screen'>
-        <div className={`${styles.glass} ${extend.glass}`} style={{ width: "45%", paddingTop: '3em'}}>
+        <div className="" style={{ width: "45%", paddingTop: '3em'}}>
 
           <div className="title flex flex-col items-center">
             <h4 className='text-5xl font-bold'>Profile</h4>

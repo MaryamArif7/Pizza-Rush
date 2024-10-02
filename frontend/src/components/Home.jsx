@@ -1,10 +1,12 @@
 
 import pizza1 from '../assets/pizza-1.png';
 import pizza4 from '../assets/pizza-4.png';
+import Nav from './Nav'
 
 const Home = () => {
   return (
     <>
+    <Nav />
       <div className="text-center">
         <h1 className="font-lobster text-2xl font-bold bg-gradient-to-r from-yellow-500 to-red-800 bg-clip-text text-transparent">
           Fresh, Hot & Fast

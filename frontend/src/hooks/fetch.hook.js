@@ -2,8 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { getUsername } from '../helper/helper'
 
-axios.defaults.baseURL = process.env.REACT_APP_SERVER_DOMAIN;
-
+axios.defaults.baseURL = import.meta.env.VITE_SERVER_DOMAIN;
 
 /** custom hook */
 export default function useFetch(query){

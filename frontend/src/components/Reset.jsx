@@ -7,7 +7,7 @@ import { useAuthStore } from '../store/store';
 import { useNavigate, Navigate } from 'react-router-dom';
 import useFetch from '../hooks/fetch.hook'
 
-import styles from '../styles/Username.module.css';
+
 
 export default function Reset() {
 
@@ -49,7 +49,7 @@ export default function Reset() {
       <Toaster position='top-center' reverseOrder={false}></Toaster>
 
       <div className='flex justify-center items-center h-screen'>
-        <div className={styles.glass} style={{ width : "50%"}}>
+        <div className="bg-[rgba(255,255,255,0.55)] rounded-[16px] shadow-[0_4px_30px_rgba(71,71,71,0.11)] backdrop-blur-[7.1px]  border-[rgba(255,255,255,0.3)] border-4 border-gray-50 shrink-0 h-[75%] w-[30%]  py-20 px-7 min-w-max" style={{ width : "50%"}}>
 
           <div className="title flex flex-col items-center">
             <h4 className='text-5xl font-bold'>Reset</h4>
@@ -60,9 +60,9 @@ export default function Reset() {
 
           <form className='py-20' onSubmit={formik.handleSubmit}>
               <div className="textbox flex flex-col items-center gap-6">
-                  <input {...formik.getFieldProps('password')} className={styles.textbox} type="text" placeholder='New Password' />
-                  <input {...formik.getFieldProps('confirm_pwd')} className={styles.textbox} type="text" placeholder='Repeat Password' />
-                  <button className={styles.btn} type='submit'>Reset</button>
+                  <input {...formik.getFieldProps('password')} className="border-0 px-5 py-4 rounded-xl w-3/4 shadow-sm text-lg focus:outline-none" type="text" placeholder='New Password' />
+                  <input {...formik.getFieldProps('confirm_pwd')} className="border-0 px-5 py-4 rounded-xl w-3/4 shadow-sm text-lg focus:outline-none"type="text" placeholder='Repeat Password' />
+                  <button className="border bg-indigo-500 w-3/4 py-4 rounded-lg text-gray-50 text-xl shadow-sm text-center hover:bg-[#ff6a6a]" type='submit'>Reset</button>
               </div>
 
           </form>

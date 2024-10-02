@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import connectDB from './database/database.js'; 
-import authRoutes from './routes/auth.route.js'; 
+import router from './routes/auth.route.js'; 
 
 const app = express();
 dotenv.config(); 
@@ -22,7 +22,7 @@ app.use(cookieParser());
 
 const PORT = process.env.PORT || 8000;
 
-app.use("/api/auth", authRoutes);
+app.use("/api", router);
 
 
 app.listen(PORT, () => {
