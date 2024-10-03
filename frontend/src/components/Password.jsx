@@ -14,28 +14,26 @@ export default function Password() {
   const [{ isLoading, apiData, serverError }] = useFetch(`/user/${username}`)
 
   const formik = useFormik({
-    initialValues : {
-      password : 'admin@123'
+    initialValues: {
+        password: 'admin@123'
     },
-    validate : passwordValidate,
+    validate: passwordValidate,
     validateOnBlur: false,
     validateOnChange: false,
-    onSubmit : async values => {
-      
-      let loginPromise = verifyPassword({ username, password : values.password })
-      toast.promise(loginPromise, {
-        loading: 'Checking...',
-        success : <b>Login Successfully...!</b>,
-        error : <b>Password Not Match!</b>
-      });
+    onSubmit: async (values) => {
+        try {
+            const res = await verifyPassword({ username, password: values.password });
+            const { token } = res.data;
 
-      loginPromise.then(res => {
-        let { token } = res.data;
-        localStorage.setItem('token', token);
-        navigate('/profile')
-      })
+            localStorage.setItem('token', token);
+            toast.success('Login Successfully...!');
+            navigate('/profile');
+        } catch (error) {
+            toast.error('Password Not Match!');
+            console.error("Error during login:", error);
+        }
     }
-  })
+});
 
   if(isLoading) return <h1 className='text-2xl font-bold'>isLoading</h1>;
   if(serverError) return <h1 className='text-xl text-red-500'>{serverError.message}</h1>

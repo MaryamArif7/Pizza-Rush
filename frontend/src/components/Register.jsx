@@ -23,7 +23,7 @@ export default function Register() {
         toast.success(registerMessage); 
         navigate('/');
       } catch (error) {
-        toast.error(error.message || "Could not Register."); // Display error message
+        toast.error(error.message || "Could not Register."); 
       }
     },
   })
