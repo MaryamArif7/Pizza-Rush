@@ -1,222 +1,203 @@
+import { User } from "../models/auth.model.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import ENV from "../config.js";
+import otpGenerator from "otp-generator";
 
-import { User } from '../models/auth.model.js'; 
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import ENV from '../config.js'
-import otpGenerator from 'otp-generator';
-
-export async function verifyUser(req, res, next){
+export async function verifyUser(req, res, next) {
   try {
+    const username =
+      req.method === "GET" ? req.query.username : req.body.username;
+
+    const userExists = await UserModel.findOne({ username });
+    if (!userExists) {
+      return res.status(404).send({ error: "User not found!" });
+    }
+
+    next();
+  } catch (error) {
+    console.error("Error verifying user:", error);
+    return res.status(401).send({ error: "Authentication error." });
+  }
+}
+
+export async function register(req, res) {
+  try {
+    const { username, password, profile, email } = req.body;
+
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(400).send({ error: "Please use a unique username." });
+    }
+
+    const existingEmail = await User.findOne({ email });
+    if (existingEmail) {
+      return res.status(400).send({ error: "Please use a unique email." });
+    }
+
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      const user = new User({
+        username,
+        password: hashedPassword,
+        profile: profile || "",
+        email,
+      });
+
+      await user.save();
+      return res.status(201).send({ msg: "User registered successfully." });
+    }
+
+    return res.status(400).send({ error: "Password is required." });
+  } catch (error) {
+    console.error("Registration error:", error);
+    return res
+      .status(500)
+      .send({ error: "An error occurred during registration." });
+  }
+}
+export async function login(req, res) {
+    const { username, password } = req.body;
+
+    try {
       
-      const { username } = req.method == "GET" ? req.query : req.body;
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).send({ error: "Username not found." });
+        }
 
-      // check the user existance
-      let exist = await UserModel.findOne({ username });
-      if(!exist) return res.status(404).send({ error : "Can't find User!"});
-      next();
+        // Compare the password
+        const passwordCheck = await bcrypt.compare(password, user.password);
+        if (!passwordCheck) {
+            return res.status(400).send({ error: "Incorrect password." });
+        }
 
-  } catch (error) {
-      return res.status(404).send({ error: "Authentication Error"});
-  }
+       
+        const token = jwt.sign(
+            {
+                userId: user._id,
+                username: user.username,
+            },
+            ENV.JWT_SECRET,
+            { expiresIn: "24h" }
+        );
+
+        return res.status(200).send({
+            msg: "Login successful!",
+            username: user.username,
+            token,
+        });
+    } catch (error) {
+        console.error("Login error:", error); // Log the error for debugging
+        return res.status(500).send({ error: "An error occurred during login." });
+    }
 }
-export async function register(req,res){
+export async function getUser(req, res) {
+    const { username } = req.params;
 
-  try {
-      const { username, password, profile, email } = req.body;        
+    try {
 
-      // check the existing user
-      const existUsername = new Promise((resolve, reject) => {
-          User.findOne({ username }, function(err, user){
-              if(err) reject(new Error(err))
-              if(user) reject({ error : "Please use unique username"});
+        if (!username) {
+            return res.status(400).send({ error: "Invalid Username" });
+        }
 
-              resolve();
-          })
-      });
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).send({ error: "Couldn't find the user." });
+        }
 
-      // check for existing email
-      const existEmail = new Promise((resolve, reject) => {
-          User.findOne({ email }, function(err, email){
-              if(err) reject(new Error(err))
-              if(email) reject({ error : "Please use unique Email"});
-
-              resolve();
-          })
-      });
-
-
-      Promise.all([existUsername, existEmail])
-          .then(() => {
-              if(password){
-                  bcrypt.hash(password, 10)
-                      .then( hashedPassword => {
-                          
-                          const user = new User({
-                              username,
-                              password: hashedPassword,
-                              profile: profile || '',
-                              email
-                          });
-
-                          // return save result as a response
-                          user.save()
-                              .then(result => res.status(201).send({ msg: "User Register Successfully"}))
-                              .catch(error => res.status(500).send({error}))
-
-                      }).catch(error => {
-                          return res.status(500).send({
-                              error : "Enable to hashed password"
-                          })
-                      })
-              }
-          }).catch(error => {
-              return res.status(500).send({ error })
-          })
-
-
-  } catch (error) {
-      return res.status(500).send(error);
-  }
-
+        const { password, ...rest } = user.toObject(); 
+    } catch (error) {
+        console.error("Error retrieving user:", error); 
+        return res.status(500).send({ error: "Cannot find user data." });
+    }
 }
-export async function login(req,res){
+export async function updateUser(req, res) {
+    try {
+      const { userId } = req.user; 
+  
+      if (!userId) {
+        return res.status(401).send({ error: "User Not Found...!" });
+      }
+  
+      const body = req.body;
+  
+
+      const result = await User.updateOne({ _id: userId }, body);
+      
    
-  const { username, password } = req.body;
-
-  try {
-      
-      User.findOne({ username })
-          .then(user => {
-              bcrypt.compare(password, user.password)
-                  .then(passwordCheck => {
-
-                      if(!passwordCheck) return res.status(400).send({ error: "Don't have Password"});
-
-                      // create jwt token
-                      const token = jwt.sign({
-                                      userId: user._id,
-                                      username : user.username
-                                  }, ENV.JWT_SECRET , { expiresIn : "24h"});
-
-                      return res.status(200).send({
-                          msg: "Login Successful...!",
-                          username: user.username,
-                          token
-                      });                                    
-
-                  })
-                  .catch(error =>{
-                      return res.status(400).send({ error: "Password does not Match"})
-                  })
-          })
-          .catch( error => {
-              return res.status(404).send({ error : "Username not Found"});
-          })
-
-  } catch (error) {
-      return res.status(500).send({ error});
-  }
-}
-export async function getUser(req,res){
-    
-  const { username } = req.params;
-
-  try {
-      
-      if(!username) return res.status(501).send({ error: "Invalid Username"});
-
-      User.findOne({ username }, function(err, user){
-          if(err) return res.status(500).send({ err });
-          if(!user) return res.status(501).send({ error : "Couldn't Find the User"});
-
-    
-          const { password, ...rest } = Object.assign({}, user.toJSON());
-
-          return res.status(201).send(rest);
-      })
-
-  } catch (error) {
-      return res.status(404).send({ error : "Cannot Find User Data"});
-  }
-
-}
-export async function updateUser(req,res){
-  try {
-      
-      const { userId } = req.user;
-
-      if(userId){
-          const body = req.body;
-
-      
-          User.updateOne({ _id : userId }, body, function(err, data){
-              if(err) throw err;
-
-              return res.status(201).send({ msg : "Record Updated...!"});
-          })
-
-      }else{
-          return res.status(401).send({ error : "User Not Found...!"});
+      if (result.nModified === 0) {
+        return res.status(404).send({ error: "No records updated. User may not exist or no changes were made." });
       }
-
-  } catch (error) {
-      return res.status(401).send({ error });
-  }
+  
+      return res.status(200).send({ msg: "Record Updated...!" });
+    } catch (error) {
+      console.error("Error updating user:", error);
+      return res.status(500).send({ error: "An error occurred while updating the user." });
+    }
+  
 }
-export async function generateOTP(req,res){
-  req.app.locals.OTP = await otpGenerator.generate(6, { lowerCaseAlphabets: false, upperCaseAlphabets: false, specialChars: false})
-  res.status(201).send({ code: req.app.locals.OTP })
-}
-export async function verifyOTP(req,res){
-  const { code } = req.query;
-  if(parseInt(req.app.locals.OTP) === parseInt(code)){
-      req.app.locals.OTP = null; 
-      req.app.locals.resetSession = true; 
-      return res.status(201).send({ msg: 'Verify Successsfully!'})
-  }
-  return res.status(400).send({ error: "Invalid OTP"});
-}
-export async function createResetSession(req,res){
-  if(req.app.locals.resetSession){
-       return res.status(201).send({ flag : req.app.locals.resetSession})
-  }
-  return res.status(440).send({error : "Session expired!"})
-}
-export async function resetPassword(req,res){
-  try {
+export async function generateOTP(req, res) {
+    try {
+      const otp = await otpGenerator.generate(6, {
+        lowerCaseAlphabets: false,
+        upperCaseAlphabets: false,
+        specialChars: false,
+      });
       
-      if(!req.app.locals.resetSession) return res.status(440).send({error : "Session expired!"});
-
+      req.app.locals.OTP = otp;
+      res.status(201).send({ code: otp });
+    } catch (error) {
+      console.error("Error generating OTP:", error);
+      res.status(500).send({ error: "Failed to generate OTP" });
+    }
+  }
+  
+  export async function verifyOTP(req, res) {
+    const { code } = req.query;
+  
+    if (parseInt(req.app.locals.OTP) === parseInt(code)) {
+      req.app.locals.OTP = null;
+      req.app.locals.resetSession = true;
+      return res.status(200).send({ msg: "Verified Successfully!" });
+    }
+  
+    return res.status(400).send({ error: "Invalid OTP" });
+  }
+  
+  export async function createResetSession(req, res) {
+    if (req.app.locals.resetSession) {
+      return res.status(200).send({ flag: req.app.locals.resetSession });
+    }
+    return res.status(440).send({ error: "Session expired!" });
+  }
+  
+  export async function resetPassword(req, res) {
+    try {
+      if (!req.app.locals.resetSession) {
+        return res.status(440).send({ error: "Session expired!" });
+      }
+  
       const { username, password } = req.body;
-
-      try {
-          
-          User.findOne({ username})
-              .then(user => {
-                  bcrypt.hash(password, 10)
-                      .then(hashedPassword => {
-                          User.updateOne({ username : user.username },
-                          { password: hashedPassword}, function(err, data){
-                              if(err) throw err;
-                              req.app.locals.resetSession = false; // reset session
-                              return res.status(201).send({ msg : "Record Updated...!"})
-                          });
-                      })
-                      .catch( e => {
-                          return res.status(500).send({
-                              error : "Enable to hashed password"
-                          })
-                      })
-              })
-              .catch(error => {
-                  return res.status(404).send({ error : "Username not Found"});
-              })
-
-      } catch (error) {
-          return res.status(500).send({ error })
+  
+      const user = await User.findOne({ username });
+      if (!user) {
+        return res.status(404).send({ error: "Username not Found" });
       }
-
-  } catch (error) {
-      return res.status(401).send({ error })
+  
+      const hashedPassword = await bcrypt.hash(password, 10);
+      
+      await User.updateOne(
+        { username: user.username },
+        { password: hashedPassword }
+      );
+  
+      req.app.locals.resetSession = false; // reset session
+      return res.status(200).send({ msg: "Password Updated Successfully!" });
+  
+    } catch (error) {
+      console.error("Error resetting password:", error);
+      return res.status(500).send({ error: "An error occurred while resetting the password." });
+    }
   }
-}
