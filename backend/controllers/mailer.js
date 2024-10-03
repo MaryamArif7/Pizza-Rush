@@ -24,33 +24,32 @@ let MailGenerator = new Mailgen({
     }
 })
 
-
 export const registerMail = async (req, res) => {
     const { username, userEmail, text, subject } = req.body;
 
     // body of the email
-    var email = {
-        body : {
+    const email = {
+        body: {
             name: username,
-            intro : text || 'Welcome to Daily Tuition! We\'re very excited to have you on board.',
+            intro: text || 'Welcome to Daily Tuition! We\'re very excited to have you on board.',
             outro: 'Need help, or have questions? Just reply to this email, we\'d love to help.'
         }
-    }
+    };
 
-    var emailBody = MailGenerator.generate(email);
+    const emailBody = MailGenerator.generate(email);
 
-    let message = {
-        from : ENV.EMAIL,
+    const message = {
+        from: ENV.EMAIL,
         to: userEmail,
-        subject : subject || "Signup Successful",
-        html : emailBody
+        subject: subject || "Signup Successful",
+        html: emailBody
+    };
+
+    try {
+        await transporter.sendMail(message);
+        return res.status(200).send({ msg: "You should receive an email from us." });
+    } catch (error) {
+        console.error("Error sending email:", error);
+        return res.status(500).send({ error: "Failed to send email." });
     }
-
-    // send mail
-    transporter.sendMail(message)
-        .then(() => {
-            return res.status(200).send({ msg: "You should receive an email from us."})
-        })
-        .catch(error => res.status(500).send({ error }))
-
-}
+};
