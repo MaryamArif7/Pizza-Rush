@@ -3,18 +3,19 @@ import jwt_decode from 'jwt-decode';
 
 axios.defaults.baseURL = import.meta.env.VITE_SERVER_DOMAIN;
 
-
-/** Make API Requests */
-
-
-/** To get username from Token */
-export async function getUsername(){
-    const token = localStorage.getItem('token')
-    if(!token) return Promise.reject("Cannot find Token");
-    let decode = jwt_decode(token)
-    return decode;
+export async function getUsername() {
+    const token = localStorage.getItem('token');
+    
+    // Check if the token exists
+    if (!token) {
+        throw new Error("Cannot find Token");
+    }
+    
+    // Decode the token
+    const decoded = jwt_decode(token);
+    
+    return decoded; // Return the decoded token
 }
-
 /** authenticate function */
 export async function authenticate(username){
     try {
@@ -34,82 +35,111 @@ export async function getUser({ username }){
     }
 }
 
-/** register user function */
-export async function registerUser(credentials){
+/** register user function 
+ *the values obj which wer passes to registerUser are recived here
+ as the credentials 
+ * then the req is made to the api the data,message ,status sent from the 
+ backedn is desrtured
+ from credinetails username and emial is desrucrued
+/**
+ * Registers a new user and sends a confirmation email if registration is successful.
+ */
+export async function registerUser(credentials) {
+    const { username, email } = credentials;
+
     try {
-        const { data : { msg }, status } = await axios.post(`/api/register`, credentials);
+        // Send registration request
+        const response = await axios.post(`/api/register`, credentials);
+        const { data: { msg }, status } = response;
 
-        let { username, email } = credentials;
-
-        /** send email */
-        if(status === 201){
-            await axios.post('/api/registerMail', { username, userEmail : email, text : msg})
+        // If registration was successful, send a confirmation email
+        if (status === 201) {
+            await axios.post('/api/registerMail', { username, userEmail: email, text: msg });
         }
 
-        return Promise.resolve(msg)
+  
+        return msg;
     } catch (error) {
-        return Promise.reject({ error })
+     
+        console.error('Registration error:', error);
+        throw new Error('Registration failed. Please try again.');
     }
 }
 
 /** login function */
-export async function verifyPassword({ username, password }){
-    try {
-        if(username){
-            const { data } = await axios.post('/api/login', { username, password })
-            return Promise.resolve({ data });
-        }
-    } catch (error) {
-        return Promise.reject({ error : "Password doesn't Match...!"})
+export async function verifyPassword({ username, password }) {
+    if (!username || !password) {
+        throw new Error("Username and password are required.");
     }
-}
 
+    try {
+        const { data } = await axios.post('/api/login', { username, password });
+        return data; 
+    } catch (error) {
+        console.error('Verification error:', error); 
+        throw new Error("Password doesn't match...!");
+}
+}
 /** update user profile function */
 export async function updateUser(response){
     try {
         
         const token = await localStorage.getItem('token');
-        const data = await axios.put('/api/updateuser', response, { headers : { "Authorization" : `Bearer ${token}`}});
+        const data = await axios.put('/api/updateuser', response,
+             { headers : { "Authorization" : `Bearer ${token}`}});
 
-        return Promise.resolve({ data })
+        return data;
     } catch (error) {
-        return Promise.reject({ error : "Couldn't Update Profile...!"})
+        console.error('Updation Error:', error); 
+        throw new Error("Profile could'not be updated...!");
     }
 }
 
 /** generate OTP */
-export async function generateOTP(username){
+export async function generateOTP(username) {
     try {
-        const {data : { code }, status } = await axios.get('/api/generateOTP', { params : { username }});
+        const { data: { code }, status } = await axios.get('/api/generateOTP', { params: { username } });
 
-        // send mail with the OTP
-        if(status === 201){
-            let { data : { email }} = await getUser({ username });
-            let text = `Your Password Recovery OTP is ${code}. Verify and recover your password.`;
-            await axios.post('/api/registerMail', { username, userEmail: email, text, subject : "Password Recovery OTP"})
+      
+        if (status === 201) {
+            const { data: { email } } = await getUser({ username });
+            const text = `Your Password Recovery OTP is ${code}. Verify and recover your password.`;
+            
+            await axios.post('/api/registerMail', {
+                username,
+                userEmail: email,
+                text,
+                subject: "Password Recovery OTP"
+            });
         }
-        return Promise.resolve(code);
+        
+        return code; 
     } catch (error) {
-        return Promise.reject({ error });
+        console.error('OTP generation error:', error); 
+        throw new Error("Failed to generate OTP. Please try again."); 
     }
 }
-
 /** verify OTP */
 export async function verifyOTP({ username, code }){
     try {
        const { data, status } = await axios.get('/api/verifyOTP', { params : { username, code }})
        return { data, status }
     } catch (error) {
-        return Promise.reject(error);
+        return console.log("Error",error)
     }
 }
 
 /** reset password */
-export async function resetPassword({ username, password }){
+export async function resetPassword({ username, password }) {
+    if (!username || !password) {
+        throw new Error("Username and password are required.");
+    }
+
     try {
         const { data, status } = await axios.put('/api/resetPassword', { username, password });
-        return Promise.resolve({ data, status})
+        return { data, status };
     } catch (error) {
-        return Promise.reject({ error })
+        console.error('Reset password error:', error); 
+        throw new Error("Failed to reset password. Please try again."); 
     }
 }
