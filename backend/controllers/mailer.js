@@ -7,10 +7,10 @@ import Mailgen from 'mailgen';
 let nodeConfig = {
     host: "smtp.ethereal.email",
     port: 587,
-    secure: false, // true for 465, false for other ports
+    secure: false, 
     auth: {
-        user: ENV.EMAIL, // generated ethereal user
-        pass: ENV.PASSWORD, // generated ethereal password
+        user: process.env.EMAIL, 
+        pass: process.env.PASSWORD,
     }
 }
 
@@ -27,7 +27,6 @@ let MailGenerator = new Mailgen({
 export const registerMail = async (req, res) => {
     const { username, userEmail, text, subject } = req.body;
 
-    // body of the email
     const email = {
         body: {
             name: username,
@@ -39,7 +38,7 @@ export const registerMail = async (req, res) => {
     const emailBody = MailGenerator.generate(email);
 
     const message = {
-        from: ENV.EMAIL,
+        from: process.env.EMAIL,
         to: userEmail,
         subject: subject || "Signup Successful",
         html: emailBody

@@ -6,17 +6,16 @@ axios.defaults.baseURL = import.meta.env.VITE_SERVER_DOMAIN;
 export async function getUsername() {
     const token = localStorage.getItem('token');
     
-    // Check if the token exists
+    
     if (!token) {
         throw new Error("Cannot find Token");
     }
-    
-    // Decode the token
+
     const decoded = jwt_decode(token);
     
-    return decoded; // Return the decoded token
+    return decoded; 
 }
-/** authenticate function */
+
 export async function authenticate(username){
     try {
         return await axios.post('/api/authenticate', { username })
