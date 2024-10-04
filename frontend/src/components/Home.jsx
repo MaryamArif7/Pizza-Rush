@@ -14,7 +14,7 @@ const Home = () => {
         <p className="bg-gradient-to-r from-yellow-500 to-red-600 bg-clip-text text-transparent mt-2 font-extrabold text-4xl font-anton">
           From oven to doorstep, quality in every bite.
         </p>
-        <p className="mt-3 font-anton font-semibold">
+        <p className="mt-3 font-lobster font-semibold">
           At Pizza Rush, every pizza is a masterpiece. Made with fresh ingredients and a passion for flavor, <br />
           pizzas are designed for every taste. Whether you want to explore bold new flavors, <br />
           we’ve got the perfect pizza for you.
