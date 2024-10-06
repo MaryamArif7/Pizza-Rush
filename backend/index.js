@@ -23,7 +23,7 @@ app.use(cors(corsOptions));
 app.use(cookieParser());
 
 const PORT = process.env.PORT || 8000;
-
+app.use(express.static('public'));
 app.use("/api", router);
 
 
@@ -44,4 +44,4 @@ MenuModal.insertMany(Menu)
   .catch((error) => {
     console.error("Error inserting menu items:", error);
   })
-    */
+   */ 
