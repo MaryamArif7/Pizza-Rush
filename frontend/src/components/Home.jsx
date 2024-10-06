@@ -1,6 +1,7 @@
 
 import pizza1 from '../assets/pizza-1.png';
 import pizza4 from '../assets/pizza-4.png';
+import Menu from './Menu';
 import Nav from './Nav'
 
 const Home = () => {
@@ -32,6 +33,7 @@ const Home = () => {
           </div>
         </div>
       </div>
+      <Menu />
     </>
   );
 };

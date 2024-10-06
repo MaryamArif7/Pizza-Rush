@@ -7,6 +7,7 @@ import Reset from "./components/Reset";
 import PageNotFound from "./components/PageNotFound";
 import Home from "./components/Home";
 import { AuthorizeUser, ProtectRoute } from "./middleware/auth";
+import Menu from "./components/Menu";
 const router = createBrowserRouter([
   {
     path: "/auth",
@@ -16,10 +17,11 @@ const router = createBrowserRouter([
     path: "/register",
     element: <Register />,
   },
+  
   {
     path: "/",
     element: <Home />,
-  },
+  }, 
   {
     path: "/password",
     element: (
@@ -46,7 +48,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <div className="bg-slate-50 min-h-screen">
+   
       <main>
+    
         <RouterProvider router={router}></RouterProvider>
       </main>
     </div>
