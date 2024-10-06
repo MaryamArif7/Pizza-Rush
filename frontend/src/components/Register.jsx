@@ -10,15 +10,15 @@ export default function Register() {
  
   const formik = useFormik({
     initialValues: {
-      email: 'doyol56239@cnogs.com',
-      username: 'example123',
-      password: 'admin@123',
+      email: 'maryam777@gmail.com',
+      username: 'maryam7',
+      password: 'maryam1306',
     },
     validate: registerValidation,
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: async (values) => {
-      try {
+      try { 
         const registerMessage = await registerUser(values);
         toast.success(registerMessage); 
         navigate('/');

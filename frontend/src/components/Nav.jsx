@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo-7.png";
 import {
   MagnifyingGlassIcon,
@@ -8,6 +8,12 @@ import {
 } from "@heroicons/react/24/outline";
 
 const Nav = () => {
+  const navigate=useNavigate();
+  const loginClick=()=>{
+  navigate('/register');
+  }
+  
+
   return (
     <div className=" flex justify-between items-center px-10 font-medium text-lg">
       <img className="w-28 h-28" src={logo} alt="Logo" />
@@ -46,7 +52,7 @@ const Nav = () => {
             </button>
           </li>
           <li>
-            <button>
+            <button onClick={loginClick}>
               <ArrowRightOnRectangleIcon className="h-8 w-8" />
             </button>
           </li>

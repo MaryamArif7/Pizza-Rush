@@ -22,7 +22,7 @@ export async function verifyUser(req, res, next) {
 
 export async function register(req, res) {
   try {
-    const { username, password, profile, email } = req.body;
+    const { username, password,  email } = req.body;
 
     const existingUser = await User.findOne({ username });
     if (existingUser) {
@@ -40,7 +40,6 @@ export async function register(req, res) {
       const user = new User({
         username,
         password: hashedPassword,
-        profile: profile || "",
         email,
       });
 

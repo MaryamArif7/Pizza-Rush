@@ -12,6 +12,10 @@ export default function Username() {
     initialValues : {
       username : 'Maryam7777'
     },
+    //to validate the userName if it exists in the db or not
+    //in the authenticate fun ,authenticate will hit the /authenticate end point
+    //in verifyUser controller,username will be extracted from the request
+    //then it will check that if username does exist in mongodb or not
     validate : usernameValidate,
     validateOnBlur: false,
     validateOnChange: false,

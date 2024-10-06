@@ -2,7 +2,7 @@ import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
 axios.defaults.baseURL = import.meta.env.VITE_SERVER_DOMAIN;
-
+//reterirve the username from the token
 export async function getUsername() {
     const token = localStorage.getItem('token');
     
@@ -52,11 +52,15 @@ export async function registerUser(credentials) {
         const { data: { msg }, status } = response;
 
         // If registration was successful, send a confirmation email
+        //if the user regitserd succefully and res was status code 201 
+        //then we are sending status code and messgae that user reshitered succsully
+        //we will send both of the code and messgae while hitting the registeremail end point
+        //which will recice userName ,email,and text from the req body
         if (status === 201) {
             await axios.post('/api/registerMail', { username, userEmail: email, text: msg });
         }
 
-  
+  //messgae revived from the res
         return msg;
     } catch (error) {
      
