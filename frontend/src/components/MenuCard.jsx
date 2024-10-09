@@ -1,9 +1,9 @@
-const MenuCard = ({image,name,price,description}) => {
+const MenuCard = ({ image, name, price, description }) => {
   return (
     <div className="ml-10">
       <div className="h-max w-72 bg-white rounded-lg shadow-lg overflow-hidden">
         <img
-          src={image}
+          src={`http://localhost:5000/${image}`}
           alt={name}
           className="w-full h-48 object-contain"
         />
@@ -12,9 +12,7 @@ const MenuCard = ({image,name,price,description}) => {
           <h3 className="text-xl text-center font-semibold text-gray-800">
             {name}
           </h3>
-          <p className="text-center mt-2 text-gray-600">
-            {description}
-          </p>
+          <p className="text-center mt-2 text-gray-600">{description}</p>
           <hr className="border-red-300 my-4" />
 
           <div className="flex justify-between">

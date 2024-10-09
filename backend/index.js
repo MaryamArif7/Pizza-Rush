@@ -6,6 +6,9 @@ import connectDB from './database/database.js';
 import router from './routes/auth.route.js';
 import Menu from './database/Menu.js' ;
 import MenuModal from "./models/menu.modal.js"
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 
 const app = express();
 dotenv.config(); 
@@ -23,7 +26,9 @@ app.use(cors(corsOptions));
 app.use(cookieParser());
 
 const PORT = process.env.PORT || 8000;
-app.use(express.static('public'));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
 app.use("/api", router);
 
 
@@ -45,4 +50,4 @@ MenuModal.insertMany(Menu)
   .catch((error) => {
     console.error("Error inserting menu items:", error);
   })
-   */ 
+   */

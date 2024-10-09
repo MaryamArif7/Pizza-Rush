@@ -12,7 +12,7 @@
     image:"images/dynamite pizza.jpeg"
   },
   {
-    name: "Chicken Cheeseburger Pizza",
+    name: "Chicken Cheeseburger ",
     price: 777,
     description: "Ground chicken, cheddar, burger sauce, and mozzarella",
     image:"images/chciken cheese burger pizza.png"
@@ -33,13 +33,13 @@
     name: "Cream Mughal Pizza",
     price: 777,
     description: "Creamy chicken with Mughal spices and no tomato sauce",
-    image:"images/cream/mughal.jpg"
+    image:"images/creamy mughal.jpg"
   },
   {
     name: "Peri Peri Chicken Pizza",
     price: 777,
     description: "Spicy peri peri chicken with onions, peppers, and mozzarella",
-    image:"images/peri peri.jpg"
+    image:"images/peri peri.jpeg"
   },
   {
     name: "Tandoori Paneer Pizza",
