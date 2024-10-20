@@ -2,15 +2,14 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Username from "./components/Username";
 import Password from "./components/Password";
 import Register from "./components/Register";
-import Recovery from "./components/Recovery";
-import Reset from "./components/Reset";
+
 import PageNotFound from "./components/PageNotFound";
 import Home from "./components/Home";
 import { AuthorizeUser, ProtectRoute } from "./middleware/auth";
 import Menu from "./components/Menu";
 const router = createBrowserRouter([
   {
-    path: "/auth",
+    path: "/login",
     element: <Username />,
   },
   {
@@ -31,14 +30,6 @@ const router = createBrowserRouter([
     ),
   },
 
-  {
-    path: "/recovery",
-    element: <Recovery />,
-  },
-  {
-    path: "/reset",
-    element: <Reset />,
-  },
   {
     path: "*",
     element: <PageNotFound />,

@@ -2,7 +2,6 @@ import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useFormik } from "formik";
 import { profileValidation } from "../helper/validate";
-import convertToBase64 from "../helper/convert";
 import useFetch from "../hooks/fetch.hook";
 import { updateUser } from "../helper/helper";
 import { useNavigate } from "react-router-dom";
@@ -38,19 +37,12 @@ export default function Profile() {
     },
   });
 
-  /** formik doensn't support file upload so we need to create this handler */
-  const onUpload = async (e) => {
-    const base64 = await convertToBase64(e.target.files[0]);
-    setFile(base64);
-  };
-
-  // logout handler function
   function userLogout() {
     localStorage.removeItem("token");
     navigate("/");
   }
 
-  if (isLoading) return <h1 className="text-2xl font-bold">isLoading</h1>;
+  if (isLoading) return <h1 className="text-2xl font-bold">Loading...</h1>;
   if (serverError)
     return <h1 className="text-xl text-red-500">{serverError.message}</h1>;
 
@@ -68,16 +60,7 @@ export default function Profile() {
           </div>
 
           <form className="py-1" onSubmit={formik.handleSubmit}>
-            <div className=" flex justify-center py-4">
-           
-
-              <input
-                onChange={onUpload}
-                type="file"
-                id="profile"
-                name="profile"
-              />
-            </div>
+            <div className=" flex justify-center py-4"></div>
 
             <div className="textbox flex flex-col items-center gap-6">
               <div className="name flex w-3/4 gap-10">
@@ -85,13 +68,13 @@ export default function Profile() {
                   {...formik.getFieldProps("firstName")}
                   className=""
                   type="text"
-                  placeholder="FirstName"
+                  placeholder="First Name"
                 />
                 <input
                   {...formik.getFieldProps("lastName")}
                   className=""
                   type="text"
-                  placeholder="LastName"
+                  placeholder="Last Name"
                 />
               </div>
 
@@ -123,8 +106,8 @@ export default function Profile() {
 
             <div className="text-center py-4">
               <span className="text-gray-500">
-                come back later?{" "}
-                <button onClick={userLogout} className="text-red-500" to="/">
+                Come back later?{" "}
+                <button onClick={userLogout} className="text-red-500">
                   Logout
                 </button>
               </span>

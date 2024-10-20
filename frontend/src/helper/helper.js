@@ -1,7 +1,6 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
-axios.defaults.baseURL = import.meta.env.VITE_SERVER_DOMAIN;
 //reterirve the username from the token
 export async function getUsername() {
     const token = localStorage.getItem('token');
@@ -43,12 +42,12 @@ export async function getUser({ username }){
 /**
  * Registers a new user and sends a confirmation email if registration is successful.
  */
-export async function registerUser(credentials) {
-    const { username, email } = credentials;
+export async function registerUser(values) {
+    const { username, email } = values;
 
     try {
         // Send registration request
-        const response = await axios.post(`/api/register`, credentials);
+        const response = await axios.post("http://localhost:5000/api/register", values);
         const { data: { msg }, status } = response;
 
         // If registration was successful, send a confirmation email
@@ -57,7 +56,7 @@ export async function registerUser(credentials) {
         //we will send both of the code and messgae while hitting the registeremail end point
         //which will recice userName ,email,and text from the req body
         if (status === 201) {
-            await axios.post('/api/registerMail', { username, userEmail: email, text: msg });
+            await axios.post('http://localhost:5000/api/registerMail', { username, userEmail: email, text: msg });
         }
 
   //messgae revived from the res
@@ -98,51 +97,3 @@ export async function updateUser(response){
     }
 }
 
-/** generate OTP */
-export async function generateOTP(username) {
-    try {
-        const { data: { code }, status } = await axios.get('/api/generateOTP', { params: { username } });
-
-      
-        if (status === 201) {
-            const { data: { email } } = await getUser({ username });
-            const text = `Your Password Recovery OTP is ${code}. Verify and recover your password.`;
-            
-            await axios.post('/api/registerMail', {
-                username,
-                userEmail: email,
-                text,
-                subject: "Password Recovery OTP"
-            });
-        }
-        
-        return code; 
-    } catch (error) {
-        console.error('OTP generation error:', error); 
-        throw new Error("Failed to generate OTP. Please try again."); 
-    }
-}
-/** verify OTP */
-export async function verifyOTP({ username, code }){
-    try {
-       const { data, status } = await axios.get('/api/verifyOTP', { params : { username, code }})
-       return { data, status }
-    } catch (error) {
-        return console.log("Error",error)
-    }
-}
-
-/** reset password */
-export async function resetPassword({ username, password }) {
-    if (!username || !password) {
-        throw new Error("Username and password are required.");
-    }
-
-    try {
-        const { data, status } = await axios.put('/api/resetPassword', { username, password });
-        return { data, status };
-    } catch (error) {
-        console.error('Reset password error:', error); 
-        throw new Error("Failed to reset password. Please try again."); 
-    }
-}
