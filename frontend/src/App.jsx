@@ -1,32 +1,25 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Username from "./components/Username";
-import Password from "./components/Password";
 import Register from "./components/Register";
-
 import PageNotFound from "./components/PageNotFound";
 import Home from "./components/Home";
-import { AuthorizeUser, ProtectRoute } from "./middleware/auth";
-import Menu from "./components/Menu";
+import Login from "./components/Login"
+//import Menu from "./components/Menu";
 const router = createBrowserRouter([
+ 
+
   {
-    path: "/login",
-    element: <Username />,
-  },
+    path: "/",
+    element: <Home />,
+  }, 
   {
     path: "/register",
     element: <Register />,
   },
   
   {
-    path: "/",
-    element: <Home />,
-  }, 
-  {
-    path: "/password",
+    path: "/login",
     element: (
-      <ProtectRoute>
-        <Password />
-      </ProtectRoute>
+      <Login />
     ),
   },
 

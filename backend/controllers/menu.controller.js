@@ -3,8 +3,9 @@ import MenuModel from "../models/menu.modal.js"
 export const Menu=async(req,res)=>{
     try{
   const data=await MenuModel.find();
+  console.log("Fetched Menu itmes from the database");
   return res.status(200).json(data);
-  console.log("Fetched Menu itmes from the database")
+ 
 
 }
     catch(error){

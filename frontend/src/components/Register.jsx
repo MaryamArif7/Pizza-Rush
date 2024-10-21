@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast';
 import { useFormik } from 'formik';
 import { registerValidation } from '../helper/validate';
-import { registerUser } from '../helper/helper'
+import axios from 'axios';
 
 export default function Register() {
 
@@ -19,14 +19,20 @@ export default function Register() {
     validateOnChange: false,
     onSubmit: async (values) => {
       try { 
-        const registerMessage = await registerUser(values);
-        toast.success(registerMessage); 
-        navigate('/');
+      const res =await axios.post("http://localhost:5000/api/",values,{
+    headers:{'Content-Type':"multipart/form-data"},
+    withCredentials:true,
+    
+      });
+      if(res.data.success){
+        navigate("/login");
+        toast.success(res.data.message);
+      }
+    
       } catch (error) {
         toast.error(error.message || "Could not Register."); 
       }
-    },
-  })
+  }})
   return (
     <div className="bg-[url('/src/assets/login4.png')] bg-cover bg-center">
       <div className="container mx-auto">

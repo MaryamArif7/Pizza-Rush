@@ -2,26 +2,53 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast';
 import { useFormik } from 'formik';
 import { usernameValidate } from '../helper/validate'
-import { useAuthStore } from '../store/store'
-export default function Username() {
+import { passwordValidate } from '../helper/validate'
+import toast from 'react-hot-toast';
+import {useDispatch} from "react-redux";
+import axios from 'axios';
+import {setUser} from "../redux/authSlice"
+
+
+const Login = () => {
 
   const navigate = useNavigate();
-  const setUsername = useAuthStore(state => state.setUsername);
+const dispatch=useDispatch();
+//const {user}=useSelector(store=>store.auth);
 
   const formik = useFormik({
     initialValues : {
-      username : 'Maryam7777'
+      username : 'Maryam7777',
+      password:'maryam@77'
     },
-    //to validate the userName if it exists in the db or not
-    //in the authenticate fun ,authenticate will hit the /authenticate end point
-    //in verifyUser controller,username will be extracted from the request
-    //then it will check that if username does exist in mongodb or not
-    validate : usernameValidate,
+  
+    validate : usernameValidate,passwordValidate,
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit : async values => {
-      setUsername(values.username);
-      navigate('/password')
+      try {
+        
+        const res = await axios.post("http://localhost:5000/api/login",{ username:values.username, password: values.password},{
+          headers:{
+            "Content-Type":"application/json"
+          },
+          withCredentials:true,
+    
+
+
+
+         });
+         if(res.data.success){
+      dispatch(setUser(res.data.user));
+         }
+      
+        const { token } = res.data;
+        localStorage.setItem('token', token);
+        toast.success('Login Successfully...!');
+        navigate('/');
+    } catch (error) {
+        toast.error('Password Not Match!');
+        console.error("Error during login:", error);
+    }
     }
   })
 
@@ -47,7 +74,9 @@ export default function Username() {
 
               <div className="textbox flex flex-col items-center gap-6">
                   <input {...formik.getFieldProps('username')} className="border-2 px-5 py-4 rounded-xl w-3/4 shadow-sm text-lg focus:outline-none" type="text" placeholder='Username' />
-                  <button className="bg-gradient-to-r from-yellow-400 to-red-600 text-lg  hover:bg-red-700 mt-2 text-center rounded-lg border px-14 py-3" type='submit'>Next</button>
+                  <input {...formik.getFieldProps('password')} className="border-0 px-5 py-4 rounded-xl w-3/4 shadow-sm text-lg focus:outline-none" type="text" placeholder='Password' />
+                  <button className="border bg-indigo-500 w-3/4 py-4 rounded-lg text-gray-50 text-xl shadow-sm text-center hover:bg-[#ff6a6a]" type='submit'>Sign In</button>
+               
               </div>
 
               <div className="text-center py-4">
@@ -62,3 +91,5 @@ export default function Username() {
     </div>
   )
 }
+
+export default Login

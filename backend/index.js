@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import connectDB from './database/database.js'; 
-import router from './routes/auth.route.js';
+import authRouter from './routes/auth.route.js';
 import Menu from './database/Menu.js' ;
 import MenuModal from "./models/menu.modal.js"
 import path from 'path';
@@ -29,7 +29,7 @@ const PORT = process.env.PORT || 8000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
-app.use("/api", router);
+app.use("/api", authRouter);
 
 
 
