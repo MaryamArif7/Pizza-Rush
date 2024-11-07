@@ -22,7 +22,7 @@ export default function Register() {
     onSubmit: async (values) => {
       if (page === 'register') {
         try {
-          const otp = await axios.post('http://localhost/api/auth/send-register-otp', { email: formik.values.email });
+          const otp = await axios.post('http://localhost:5000/api/auth/send-register-otp', { email: formik.values.email });
           if (otp.data.success) {
             toast.success("OTP sent Successfully");
             setPage('register_otp');
@@ -54,9 +54,9 @@ export default function Register() {
     try {
       const otp = await axios.post('http://localhost/api/auth/send-register-otp', { email: formik.values.email });
       if (otp.data.success) {
-        toast.success("OTP Resent Successfully");
+        toast.success("OTP sent Successfully");
       } else {
-        toast.error("Error resending OTP");
+        toast.error("Error sending OTP");
       }
     } catch (error) {
       toast.error("Failed to resend OTP");

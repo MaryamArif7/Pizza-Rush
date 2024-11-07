@@ -18,8 +18,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const corsOptions = {
-  //origin: 'http://localhost:5173',
-  origin :'*', 
+  origin: 'http://localhost:5173',
+
   credentials: true,
 };
 app.use(cors(corsOptions));
@@ -30,6 +30,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
 app.use("/api/auth", authRouter);
+app.use("/api",authRouter);
 
 
 
