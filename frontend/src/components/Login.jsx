@@ -1,8 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast';
 import { useFormik } from 'formik';
-import { usernameValidate } from '../helper/validate'
-import { passwordValidate } from '../helper/validate'
+import { registerValidation } from '../helper/validate';
 import toast from 'react-hot-toast';
 import {useDispatch} from "react-redux";
 import axios from 'axios';
@@ -21,7 +20,7 @@ const dispatch=useDispatch();
       password:'maryam@77'
     },
   
-    validate : usernameValidate,passwordValidate,
+    validate : registerValidation,
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit : async values => {

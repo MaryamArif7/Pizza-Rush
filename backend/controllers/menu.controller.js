@@ -1,4 +1,4 @@
-import MenuModel from "../models/menu.modal.js"
+import MenuModel from "../models/menu.model.js"
 
 export const Menu=async(req,res)=>{
     try{

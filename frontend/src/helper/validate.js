@@ -71,17 +71,4 @@ export async function passwordValidate(values) {
   return errors;
 }
 
-export async function resetPasswordValidation(values) {
-  const errors = passwordVerify({}, values);
 
-  if (values.password !== values.confirm_pwd) {
-    errors.exist = toast.error("Password not match...!");
-  }
-
-  return errors;
-}
-
-export async function profileValidation(values) {
-  const errors = emailVerify({}, values);
-  return errors;
-}
