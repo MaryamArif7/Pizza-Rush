@@ -84,7 +84,7 @@ export default function Register() {
                     <input name="email" {...formik.getFieldProps('email')} className="border-0 px-3 py-4 rounded-xl w-3/4 shadow-sm text-lg focus:outline-none" type="text" placeholder='Email*' />
                     <input name="username" {...formik.getFieldProps('username')} className="border-0 px-3 py-4 rounded-xl w-3/4 shadow-sm text-lg focus:outline-none" type="text" placeholder='Username*' />
                     <input name="password" {...formik.getFieldProps('password')} className="border-0 px-3 py-4 rounded-xl w-3/4 shadow-sm text-lg focus:outline-none" type="password" placeholder='Password*' />
-                    <button type="submit" className="capitalize w-full bg-orange p-[4px] rounded-[4px]">Submit</button>
+                    <button type="submit" className="border bg-indigo-500 w-3/4 py-4 rounded-lg text-gray-50 text-xl shadow-sm text-center hover:bg-[#ff6a6a]">Submit</button>
 
                     <span className="text-center text-gray-500">
                       Already have an account? <Link className="text-linkBlue" to="/login">Login</Link>
