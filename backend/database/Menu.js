@@ -9,7 +9,7 @@
     name: "Legend Dynamite",
     price: 777,
     description: "Spicy chicken, jalapeños, hot sauce explosion.",
-    image:"images/dynamite pizza.jpeg"
+    image:"images/dynamite pizza.jpg"
   },
   {
     name: "Chicken Cheeseburger ",
