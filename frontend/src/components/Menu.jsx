@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import MenuCard from "./MenuCard";
-
+import { useSelector,useDispatch } from "react-redux";
 const Menu = () => {
   const [menu, setMenu] = useState([]);
+ const dispatch=useDispatch();
 
   useEffect(() => {
     const fetchMenu = async () => {
@@ -17,8 +18,13 @@ const Menu = () => {
 
     fetchMenu();
   }, []);
+function handleAddtoCart(){
 
-  return (
+}
+function handleGetManuDetails(){
+
+}
+ return (
     <>
       <div className="mt-20">
         <div>
@@ -30,7 +36,10 @@ const Menu = () => {
         <div>
           <div className="mt-16 grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-2 grid-cols-1 sm:gap-4 gap-14">
             {menu.map((item) => (
-              <MenuCard key={item._id} {...item} />
+              <MenuCard key={item._id} {...item} 
+              
+              
+              />
             ))}
           </div>
         </div>
