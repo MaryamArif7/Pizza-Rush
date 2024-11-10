@@ -1,4 +1,9 @@
-const MenuCard = ({ image, name, price, description }) => {
+const MenuCard = ({ image, name, price, description,
+handleAddtoCart,
+handleGetMenuDetails,
+item,
+
+ }) => {
   return (
     <div className="ml-10">
       <div className="h-max w-72 bg-white rounded-lg shadow-lg overflow-hidden">
@@ -22,8 +27,14 @@ const MenuCard = ({ image, name, price, description }) => {
             </h1>
           </div>
 
-          <button className="w-full py-2 bg-gradient-to-r from-yellow-400 to-red-600 text-lg rounded-lg hover:bg-red-700 mt-4">
-            Add to Cart
+          <button onClick={() => handleAddtoCart(item?._id)}
+            className="w-full py-2 bg-gradient-to-r from-yellow-400 to-red-600 text-lg rounded-lg hover:bg-red-700 mt-4">
+            Add to Cart 
+          </button>
+          
+          <button onClick={() => handleGetMenuDetails(item?._id)}
+            className="w-full py-2 bg-gradient-to-r from-yellow-400 to-red-600 text-lg rounded-lg hover:bg-red-700 mt-4">
+            View Details 
           </button>
         </div>
       </div>

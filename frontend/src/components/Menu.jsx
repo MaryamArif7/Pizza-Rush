@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 import MenuCard from "./MenuCard";
 import { useSelector,useDispatch } from "react-redux";
+import { getMenuDetails } from "../redux/menuSlice";
+import { addToCart, fetchCartItems } from "../redux/cartSlice";
+import toast from "react-hot-toast";
 const Menu = () => {
   const [menu, setMenu] = useState([]);
  const dispatch=useDispatch();
-
+const {user}=useSelector((state)=>state.auth)
   useEffect(() => {
     const fetchMenu = async () => {
       try {
@@ -18,11 +21,26 @@ const Menu = () => {
 
     fetchMenu();
   }, []);
-function handleAddtoCart(){
 
+function handleAddtoCart(getMenuId){
+dispatch(
+  addToCart({
+  id:user?.id,
+  menuId:getMenuId,
+  quantity:1
+
+})
+).then((data)=>{
+if(data?.payload?.success){
+  dispatch(fetchCartItems(user?.id));
+  toast({title:"Your Pizza is added to the Cart"})
 }
-function handleGetManuDetails(){
 
+
+});
+}
+function handleGetManuDetails(getMenuId){
+    dispatch(getMenuDetails(getMenuId));
 }
  return (
     <>
@@ -37,7 +55,9 @@ function handleGetManuDetails(){
           <div className="mt-16 grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-2 grid-cols-1 sm:gap-4 gap-14">
             {menu.map((item) => (
               <MenuCard key={item._id} {...item} 
-              
+              handleAddtoCart={handleAddtoCart}
+              handleGetManuDetails={handleGetManuDetails}
+              menu={item}
               
               />
             ))}
