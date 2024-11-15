@@ -1,22 +1,21 @@
 import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
 const initialState = {
-  menuDetails: [],
+  menuDetails: null,
   isLoading: false,
 };
-export const getMenuDetails= createAsyncThunk(
-  "menu/getMenuDetails",
-  async (id, ) => {
+
+export const getMenuDetails = createAsyncThunk(
+  "menu/getMenuDetails", 
+  async (id) => {
     const response = await axios.get(
-      `http://localhost:5000/api/menu/get/${id}`,
-      {
-        id,
-   
-      }
+      `http://localhost:5000/api/menu/get/${id}`
     );
     return response.data;
   }
 );
+
 const menuSlice = createSlice({
   name: "menu",
   initialState,
@@ -26,17 +25,15 @@ const menuSlice = createSlice({
       .addCase(getMenuDetails.pending, (state) => {
         state.isLoading = true;
       })
-
       .addCase(getMenuDetails.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.  menuDetails = action.payload.data;
+        state.menuDetails = action.payload; // Update state with fetched data
       })
-
       .addCase(getMenuDetails.rejected, (state) => {
         state.isLoading = false;
-        state.  menuDetails = null;
-      })
-
+        state.menuDetails = null;
+      });
   },
 });
+
 export default menuSlice.reducer;
