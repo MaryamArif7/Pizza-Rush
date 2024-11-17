@@ -19,7 +19,11 @@ export const getMenuDetails = createAsyncThunk(
 const menuSlice = createSlice({
   name: "menu",
   initialState,
-  reducers: {},
+  reducers: {
+    setMenuDetails: (state) => {
+      state.menuDetails = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getMenuDetails.pending, (state) => {
@@ -27,7 +31,7 @@ const menuSlice = createSlice({
       })
       .addCase(getMenuDetails.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.menuDetails = action.payload; // Update state with fetched data
+        state.menuDetails = action.payload;
       })
       .addCase(getMenuDetails.rejected, (state) => {
         state.isLoading = false;
@@ -36,4 +40,5 @@ const menuSlice = createSlice({
   },
 });
 
+export const { setMenuDetails } = menuSlice.actions;
 export default menuSlice.reducer;

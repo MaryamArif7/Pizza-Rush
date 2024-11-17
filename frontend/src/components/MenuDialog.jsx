@@ -1,8 +1,20 @@
-import React from 'react'
+import { Dialog , DialogContent} from "./ui/dialog"
 
-const MenuDialog = () => {
+import { Button } from "../ui/button";
+
+const MenuDialog = ({open,setOpen,MenuDetails}) => {
   return (
-    <div>MenuDialog</div>
+<>
+<Dialog>
+
+
+
+  
+</Dialog>
+
+
+
+</>
   )
 }
 

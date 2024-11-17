@@ -13,7 +13,7 @@ const Menu = () => {
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.auth);
-  const { menuDetails, isLoading } = useSelector((state) => state.menu);
+  const { menuDetails} = useSelector((state) => state.menu);
 
   useEffect(() => {
     const fetchMenu = async () => {
