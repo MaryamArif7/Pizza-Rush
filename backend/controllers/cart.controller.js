@@ -1,7 +1,7 @@
 import Cart from "../models/cart.model.js";
 import MenuModel from "../models/menu.model.js";
 
- export const addToCart = async (req, res) => {
+export const addToCart = async (req, res) => {
   try {
     const { userId, MenuId, quantity } = req.body;
 
@@ -35,11 +35,11 @@ import MenuModel from "../models/menu.model.js";
     await cart.save();
     res.status(200).json({
       success: true,
-      message: "Your Pizza has been added to the cart Successfully",
+      message: "Your Pizza has been added to the cart successfully",
       data: cart,
     });
   } catch (error) {
-    console.log("Error while adding the Menu item");
+    console.log("Error while adding the Menu item:", error);
     res.status(500).json({
       success: false,
       message: "Internal Server error, There is an error while adding the Items in the cart",
@@ -94,10 +94,135 @@ export const fetchCartItems = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log("There is an error while fetching the pizza from the database");
-    res.status(400).json({
+    console.log("There is an error while fetching the pizza from the database:", error);
+    res.status(500).json({
       success: false,
       message: "There is an error while fetching your menu item from the database, please try again",
     });
   }
 };
+
+export const updateCart = async (req, res) => {
+  try {
+    const { userId, MenuId, quantity } = req.body;
+
+    if (!userId || !MenuId || !quantity) {
+      return res.status(400).json({
+        success: false,
+        message: "Please Provide all the data",
+      });
+    }
+
+    const cart = await Cart.findOne({ userId });
+    if (!cart) {
+      return res.status(400).json({
+        success: false,
+        message: "Cart is not found",
+      });
+    }
+
+    const indexOfItemsInTheArray = cart.items.findIndex(
+      (item) => item.MenuId.toString() === MenuId
+    );
+
+    if (indexOfItemsInTheArray === -1) {
+      return res.status(400).json({
+        success: false,
+        message: "Menu Item is not present in the cart",
+      });
+    }
+
+    cart.items[indexOfItemsInTheArray].quantity = quantity;
+    await cart.save();
+
+    await cart.populate({
+      path: "items.MenuId",
+      select: "image name price quantity description",
+    });
+
+    const frontendData = cart.items.map((item) => ({
+      MenuId: item.MenuId ? item.MenuId._id : null,
+      image: item.MenuId ? item.MenuId.image : null,
+      description: item.MenuId ? item.MenuId.description : null,
+      name: item.MenuId ? item.MenuId.name : null,
+      price: item.MenuId ? item.MenuId.price : null,
+      quantity: item.quantity,
+    }));
+
+    res.status(200).json({
+      success: true,
+      message: "Cart Updated Successfully",
+      data: {
+        ...cart._doc,
+        items: frontendData,
+      },
+    });
+  } catch (error) {
+    console.error("Error while updating cart:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server error while updating cart",
+    });
+  }
+};
+export const deleteCartItem = async (req, res) => {
+    try {
+      const { userId, MenuId } = req.params;
+  
+      if (!userId || !MenuId) {
+        return res.status(400).json({
+          success: false,
+          message: "Please Provide all the data",
+        });
+      }
+  
+      const cart = await Cart.findOne({ userId }).populate({
+        path:"items.MenuId",
+        select:"image name price description"
+      });
+      if (!cart) {
+        return res.status(400).json({
+          success: false,
+          message: "Cart is not found",
+        });
+      }
+  
+        cart.items = cart.items.filter(
+    //  const indexOfItemsInTheArray = cart.items.findIndex(
+        (item) => item.MenuId.toString() === MenuId
+      );
+  
+       await cart.save();
+  
+      await cart.populate({
+        path: "items.MenuId",
+        select: "image name price quantity description",
+      });
+  
+      const frontendData = cart.items.map((item) => ({
+        MenuId: item.MenuId ? item.MenuId._id : null,
+        image: item.MenuId ? item.MenuId.image : null,
+        description: item.MenuId ? item.MenuId.description : null,
+        name: item.MenuId ? item.MenuId.name : null,
+        price: item.MenuId ? item.MenuId.price : null,
+        quantity: item.quantity,
+      }));
+  
+      res.status(200).json({
+        success: true,
+        message: "Cart Updated Successfully",
+        data: {
+            ...cart._doc,
+            items: frontendData,
+          },
+      
+      });
+    } catch (error) {
+      console.error("Error while Deleting the Menu Item in the  cart:", error);
+      res.status(500).json({
+        success: false,
+        message: "Internal Server error while delteing from the  cart",
+      });
+    }
+  };
+  

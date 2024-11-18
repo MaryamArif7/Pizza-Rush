@@ -11,7 +11,7 @@ export const getMenuDetails = createAsyncThunk(
   async (id) => {
     const response = await axios.get(
       `http://localhost:5000/api/menu/get/${id}`
-    );
+    )
     return response.data;
   }
 );
