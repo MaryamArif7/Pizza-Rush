@@ -11,10 +11,11 @@ const Menu = () => {
   const [menu, setMenu] = useState([]);
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
   const dispatch = useDispatch();
-
   const { user } = useSelector((state) => state.auth);
-  const { menuDetails} = useSelector((state) => state.menu);
+  const { menuDetails } = useSelector((state) => state.menu);
 
+
+console.log(menuDetails);
   useEffect(() => {
     const fetchMenu = async () => {
       try {
@@ -43,11 +44,14 @@ const Menu = () => {
     });
   }
 
-  function handleGetManuDetails(getMenuId) {
-    dispatch(getMenuDetails(getMenuId)).then(() => {
-      setOpenDetailsDialog(true);
-    });
+  function handleGetMenuDetails(getMenuId) {
+    dispatch(getMenuDetails(getMenuId))
+      .then(() => {
+        setOpenDetailsDialog(true);
+      });
   }
+
+
 
   return (
     <>
@@ -65,17 +69,19 @@ const Menu = () => {
                 key={item._id}
                 {...item}
                 handleAddtoCart={handleAddtoCart}
-                handleGetManuDetails={handleGetManuDetails}
+                handleGetMenuDetails={handleGetMenuDetails}
                 menu={item}
               />
             ))}
           </div>
         </div>
-        <MenuDialog
-          open={openDetailsDialog}
-          setOpen={setOpenDetailsDialog}
-          menuDetails={menuDetails}
-        />
+        {menuDetails && (
+          <MenuDialog
+            open={openDetailsDialog}
+            setOpen={setOpenDetailsDialog}
+            menuDetails={menuDetails}
+          />
+        )}
       </div>
     </>
   );

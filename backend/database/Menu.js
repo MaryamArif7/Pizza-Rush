@@ -1,51 +1,146 @@
- const Menu = [
+const Menu = [
   {
     name: "Chicken Tikka",
     price: 777,
     description: "Spicy chicken tikka with mozzarella and peppers",
-    image:"images/chicken tikka.jpg",
+    image: "images/chicken tikka.jpg",
+    size: "Medium",
+    ingridents: {
+      base: "Tomato sauce, mozzarella cheese",
+      toppings: [
+        "Chicken tikka (marinated in yogurt and spices like cumin, coriander, turmeric, and chili powder)",
+        "Onions",
+        "Bell peppers",
+        "Green chilies (optional)",
+        "Fresh coriander (for garnish)",
+      ],
+    },
   },
   {
     name: "Legend Dynamite",
     price: 777,
     description: "Spicy chicken, jalapeños, hot sauce explosion.",
-    image:"images/dynamite pizza.jpg"
+    image: "images/dynamite pizza.jpg",
+    size: "Medium",
+    ingridents: {
+      base: "Spicy tomato or chili sauce with mozzarella cheese",
+      toppings: [
+        "Dynamite sauce (a mix of mayonnaise, chili sauce, and spices)",
+        "Fried or grilled chicken chunks",
+        "Jalapeños",
+        "Onions",
+        "Bell peppers",
+        "Drizzle of more dynamite sauce on top",
+      ],
+    },
   },
   {
     name: "Chicken Cheeseburger ",
     price: 777,
     description: "Ground chicken, cheddar, burger sauce, and mozzarella",
-    image:"images/chciken cheese burger pizza.png"
+    image: "images/chciken cheese burger pizza.png",
+    size: "Medium",
+    ingridents: {
+      base: "Tomato ketchup and mustard mix, mozzarella and cheddar cheese",
+      toppings: [
+        "Ground chicken (seasoned like a burger patty)",
+        "Onions",
+        "Pickles",
+        "Tomatoes",
+        "Lettuce (optional, added after baking)",
+        "Drizzle of burger sauce or mayonnaise",
+      ],
+    },
   },
   {
     name: "Pepperoni Hot Pizza",
     price: 777,
     description: "Spicy pepperoni with chili flakes and mozzarella",
-    image:"images/pepperoni hot.jpg"
+    image: "images/pepperoni hot.jpg",
+    size: "Medium",
+    ingridents: {
+      base: "Tomato sauce, mozzarella cheese",
+      toppings: [
+        "Spicy pepperoni slices",
+        "Jalapeños",
+        "Bell peppers",
+        "Red chili flakes (optional, for extra heat)",
+        "Fresh coriander (for garnish)",
+        "Black olives",
+      ],
+    },
   },
   {
     name: "Beef and Veggie Pizza",
     price: 777,
     description: "Ground beef, fresh vegetables, and mozzarella",
-    image:"images/beef and veggie pizza.jpeg"
+    image: "images/beef and veggie pizza.jpeg",
+    size: "Medium",
+    ingridents: {
+      base: " Tomato sauce, mozzarella cheese",
+      toppings: [
+        "Ground beef or beef chunks (seasoned with herbs and spices)",
+        "Onions",
+        "Bell peppers (red, green, yellow)",
+        "Mushrooms",
+        "Black olives",
+        "Fresh tomatoes",
+      ],
+    },
   },
   {
     name: "Cream Mughal Pizza",
     price: 777,
     description: "Creamy chicken with Mughal spices and no tomato sauce",
-    image:"images/creamy mughal.jpg"
+    image: "images/creamy mughal.jpg",
+    size: "Medium",
+    ingridents: {
+      base: "Creamy white sauce, mozzarella cheese",
+      toppings: [
+        "Chicken chunks marinated in Mughal-style spices (cardamom, cloves, cinnamon, nutmeg)",
+        "Onions",
+        "Bell peppers",
+        "Black olives",
+        "Fresh coriander (for garnish)",
+        "Drizzle of cream or yogurt-based sauce,",
+      ],
+    },
   },
   {
     name: "Peri Peri Chicken Pizza",
     price: 777,
     description: "Spicy peri peri chicken with onions, peppers, and mozzarella",
-    image:"images/peri peri.jpeg"
+    image: "images/peri peri.jpeg",
+    size: "Medium",
+    ingridents: {
+      base: " Spicy peri-peri sauce, mozzarella cheese",
+      toppings: [
+        "Grilled peri-peri chicken pieces",
+        "Onions",
+        "Bell peppers",
+        "Jalapeños",
+        "Red chili flakes (optional)",
+        "Drizzle of peri-peri sauce on top",
+      ],
+    },
   },
   {
     name: "Tandoori Paneer Pizza",
     price: 777,
     description: "Marinated tandoori paneer with veggies and mozzarella",
-    image:"images/fajita-pizza.jpg"
+    image: "images/fajita-pizza.jpg",
+    size: "Medium",
+    ingridents: {
+      base: "Tomato sauce or spiced yogurt base, mozzarella cheese",
+      toppings: [
+        "Tandoori-marinated paneer (cottage cheese)",
+        "Onions",
+        "Bell peppers",
+        "Green chilies (optional)",
+        "Fresh coriander (for garnish)",
+        "Sprinkle of chaat masala or garam masala for extra flavor",
+      ],
+    },
   },
 ];
 export default Menu;

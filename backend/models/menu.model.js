@@ -15,11 +15,26 @@ description:{
 image:{
     type:String,
     required:true,
+},
+ingridents:{
+  base:{
+    type:String,
+    reuqired:true,
+  },
+  toppings:{
+    type:[String],
+    required:true,
+  }
+    
+},
+size:{
+    type:String,
+    required:true,
 }
 
 
 
 
 },{timestamps:true});
-const MenuModel = mongoose.model('MenuModel', MenuSchema);
-export default MenuModel;
+const MenuModal = mongoose.model('MenuModal', MenuSchema);
+export default MenuModal;

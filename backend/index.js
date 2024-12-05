@@ -5,15 +5,15 @@ import cors from 'cors';
 import connectDB from './database/database.js'; 
 import authRouter from './routes/auth.route.js';
 import Menu from './database/Menu.js' ;
-import MenuModel from "./models/menu.model.js"
+import MenuModal from "./models/menu.model.js"
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { menuRouter } from './routes/menu.route.js';
 
 
 const app = express();
 dotenv.config(); 
 
-// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -31,6 +31,7 @@ const __dirname = path.dirname(__filename);
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
 app.use("/api/auth", authRouter);
 app.use("/api",authRouter);
+app.use("/api/menu",menuRouter)
 
 
 
