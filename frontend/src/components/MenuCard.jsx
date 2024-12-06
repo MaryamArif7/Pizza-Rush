@@ -5,7 +5,7 @@ const MenuCard = ({ image, name, price, description, handleAddtoCart, handleGetM
         <img
           src={`http://localhost:5000/${image}`}
           alt={name}
-          className="w-full h-48 object-contain"
+          className="w-full h-48 object-fit"
         />
         <div className="p-5">
           <h3 className="text-xl text-center font-semibold text-gray-800">

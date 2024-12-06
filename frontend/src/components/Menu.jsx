@@ -30,18 +30,23 @@ console.log(menuDetails);
   }, []);
 
   function handleAddtoCart(getMenuId) {
+    console.log("hello from handleaddtocart",{
+      id: user?._id,
+      menuId: getMenuId,
+      quantity: 1,
+    });
     dispatch(
       addToCart({
-        id: user?.id,
+        id: user?._id,
         menuId: getMenuId,
         quantity: 1,
       })
-    ).then((data) => {
-      if (data?.payload?.success) {
-        dispatch(fetchCartItems(user?.id));
+    ).then(() => {
+    
         toast.success("Your Pizza is added to the Cart");
       }
-    });
+    );
+    
   }
 
   function handleGetMenuDetails(getMenuId) {

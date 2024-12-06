@@ -7,15 +7,15 @@ const initialState = {
 export const addToCart = createAsyncThunk(
   "cart/addToCart",
   async ({ id, menuId, quantity }) => {
-    const response = await axios.post(
-      "http://localhost:5000/api/menu/cart/add",
-      {
-        id,
-        menuId,
-        quantity,
-      }
-    );
+    const response = await axios.post("http://localhost:5000/api/menu/cart/add", {
+       id,
+      menuId,
+      quantity,
+    }).catch((error) => {
+      console.error("Error adding to cart:", error.response || error.message);
+    });
     return response.data;
+    
   }
 );
 export const fetchCartItems = createAsyncThunk(

@@ -31,7 +31,7 @@ const __dirname = path.dirname(__filename);
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
 app.use("/api/auth", authRouter);
 app.use("/api",authRouter);
-app.use("/api/menu",menuRouter)
+app.use("/api/menu",menuRouter);
 
 
 

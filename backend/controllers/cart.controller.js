@@ -1,134 +1,134 @@
 import Cart from "../models/cart.model.js";
-import MenuModel from "../models/menu.model.js";
+import MenuModal from "../models/menu.model.js"; 
 
 export const addToCart = async (req, res) => {
   try {
-    const { userId, MenuId, quantity } = req.body;
+    const { id, menuId, quantity } = req.body;
 
-    if (!userId || !MenuId || quantity <= 0) {
+    if (!id || !menuId || quantity <= 0) {
       return res.status(400).json({
         success: false,
-        message: "Please Provide Valid User Id, Menu Id, and also provide the quantity",
+        message: "Please provide valid User ID, Menu ID, and a valid quantity.",
       });
     }
 
-    const menu = await MenuModel.findById(MenuId);
+    const menu = await MenuModal.findById(menuId);
     if (!menu) {
       return res.status(400).json({
         success: false,
-        message: "Error in Finding the Menu Item",
+        message: "Error finding the menu item.",
       });
     }
 
-    let cart = await Cart.findOne({ userId });
+    let cart = await Cart.findOne({ id });
     if (!cart) {
-      cart = new Cart({ userId, items: [] });
+      cart = new Cart({ id, items: [] });
     }
 
-    const currentIndex = cart.items.findIndex((item) => item.MenuId.toString() === MenuId);
+    const currentIndex = cart.items.findIndex((item) => item.menuId.toString() === menuId);
     if (currentIndex === -1) {
-      cart.items.push({ MenuId, quantity });
+      cart.items.push({ menuId, quantity });
     } else {
       cart.items[currentIndex].quantity += quantity;
     }
 
     await cart.save();
-    res.status(200).json({
+    res.status(200).json({ 
       success: true,
-      message: "Your Pizza has been added to the cart successfully",
+      message: "Your pizza has been added to the cart successfully.",
       data: cart,
     });
   } catch (error) {
-    console.log("Error while adding the Menu item:", error);
+    console.log("Error while adding the menu item:", error);
     res.status(500).json({
       success: false,
-      message: "Internal Server error, There is an error while adding the Items in the cart",
+      message: "Internal server error while adding items to the cart.",
     });
   }
 };
 
 export const fetchCartItems = async (req, res) => {
   try {
-    const { userId } = req.body;
+    const { id } = req.body;
 
-    if (!userId) {
+    if (!id) {
       return res.status(400).json({
         success: false,
-        message: "Please provide the valid User Id",
+        message: "Please provide a valid User ID.",
       });
     }
 
-    const cart = await Cart.findOne({ userId }).populate({
-      path: "items.MenuId",
+    const cart = await Cart.findOne({ id }).populate({
+      path: "items.menuId",
       select: "image name price description",
     });
 
     if (!cart) {
       return res.status(400).json({
         success: false,
-        message: "Cart with this user Id is not found",
+        message: "Cart with this user ID is not found.",
       });
     }
 
-    const validItems = cart.items.filter((item) => item.MenuId);
+    const validItems = cart.items.filter((item) => item.menuId);
     if (validItems.length < cart.items.length) {
       cart.items = validItems;
       await cart.save();
     }
 
     const frontendData = validItems.map((item) => ({
-      MenuId: item.MenuId._id,
-      image: item.MenuId.image,
-      name: item.MenuId.name,
-      price: item.MenuId.price,
-      description: item.MenuId.description,
+      menuId: item.menuId._id,
+      image: item.menuId.image,
+      name: item.menuId.name,
+      price: item.menuId.price,
+      description: item.menuId.description,
       quantity: item.quantity,
     }));
 
     res.status(200).json({
       success: true,
-      message: "Data is fetched successfully",
+      message: "Data fetched successfully.",
       data: {
         ...cart._doc,
         items: frontendData,
       },
     });
   } catch (error) {
-    console.log("There is an error while fetching the pizza from the database:", error);
+    console.log("Error while fetching the cart items:", error);
     res.status(500).json({
       success: false,
-      message: "There is an error while fetching your menu item from the database, please try again",
+      message: "Internal server error while fetching cart items.",
     });
   }
 };
 
 export const updateCart = async (req, res) => {
   try {
-    const { userId, MenuId, quantity } = req.body;
+    const { id, menuId, quantity } = req.body;
 
-    if (!userId || !MenuId || !quantity) {
+    if (!id || !menuId || !quantity) {
       return res.status(400).json({
         success: false,
-        message: "Please Provide all the data",
+        message: "Please provide all required data.",
       });
     }
 
-    const cart = await Cart.findOne({ userId });
+    const cart = await Cart.findOne({ id });
     if (!cart) {
       return res.status(400).json({
         success: false,
-        message: "Cart is not found",
+        message: "Cart not found.",
       });
     }
 
     const indexOfItemsInTheArray = cart.items.findIndex(
-      (item) => item.MenuId.toString() === MenuId
+      (item) => item.menuId.toString() === menuId
     );
 
     if (indexOfItemsInTheArray === -1) {
       return res.status(400).json({
         success: false,
-        message: "Menu Item is not present in the cart",
+        message: "Menu item is not present in the cart.",
       });
     }
 
@@ -136,93 +136,91 @@ export const updateCart = async (req, res) => {
     await cart.save();
 
     await cart.populate({
-      path: "items.MenuId",
+      path: "items.menuId",
       select: "image name price quantity description",
     });
 
     const frontendData = cart.items.map((item) => ({
-      MenuId: item.MenuId ? item.MenuId._id : null,
-      image: item.MenuId ? item.MenuId.image : null,
-      description: item.MenuId ? item.MenuId.description : null,
-      name: item.MenuId ? item.MenuId.name : null,
-      price: item.MenuId ? item.MenuId.price : null,
+      menuId: item.menuId ? item.menuId._id : null,
+      image: item.menuId ? item.menuId.image : null,
+      description: item.menuId ? item.menuId.description : null,
+      name: item.menuId ? item.menuId.name : null,
+      price: item.menuId ? item.menuId.price : null,
       quantity: item.quantity,
     }));
 
     res.status(200).json({
       success: true,
-      message: "Cart Updated Successfully",
+      message: "Cart updated successfully.",
       data: {
         ...cart._doc,
         items: frontendData,
       },
     });
   } catch (error) {
-    console.error("Error while updating cart:", error);
+    console.error("Error while updating the cart:", error);
     res.status(500).json({
       success: false,
-      message: "Internal Server error while updating cart",
+      message: "Internal server error while updating the cart.",
     });
   }
 };
+
 export const deleteCartItem = async (req, res) => {
-    try {
-      const { userId, MenuId } = req.params;
-  
-      if (!userId || !MenuId) {
-        return res.status(400).json({
-          success: false,
-          message: "Please Provide all the data",
-        });
-      }
-  
-      const cart = await Cart.findOne({ userId }).populate({
-        path:"items.MenuId",
-        select:"image name price description"
-      });
-      if (!cart) {
-        return res.status(400).json({
-          success: false,
-          message: "Cart is not found",
-        });
-      }
-  
-        cart.items = cart.items.filter(
-    //  const indexOfItemsInTheArray = cart.items.findIndex(
-        (item) => item.MenuId.toString() === MenuId
-      );
-  
-       await cart.save();
-  
-      await cart.populate({
-        path: "items.MenuId",
-        select: "image name price quantity description",
-      });
-  
-      const frontendData = cart.items.map((item) => ({
-        MenuId: item.MenuId ? item.MenuId._id : null,
-        image: item.MenuId ? item.MenuId.image : null,
-        description: item.MenuId ? item.MenuId.description : null,
-        name: item.MenuId ? item.MenuId.name : null,
-        price: item.MenuId ? item.MenuId.price : null,
-        quantity: item.quantity,
-      }));
-  
-      res.status(200).json({
-        success: true,
-        message: "Cart Updated Successfully",
-        data: {
-            ...cart._doc,
-            items: frontendData,
-          },
-      
-      });
-    } catch (error) {
-      console.error("Error while Deleting the Menu Item in the  cart:", error);
-      res.status(500).json({
+  try {
+    const { id, menuId } = req.params;
+
+    if (!id || !menuId) {
+      return res.status(400).json({
         success: false,
-        message: "Internal Server error while delteing from the  cart",
+        message: "Please provide all required data.",
       });
     }
-  };
-  
+
+    const cart = await Cart.findOne({ id }).populate({
+      path: "items.menuId",
+      select: "image name price description",
+    });
+    if (!cart) {
+      return res.status(400).json({
+        success: false,
+        message: "Cart not found.",
+      });
+    }
+
+    cart.items = cart.items.filter(
+      (item) => item.menuId.toString() !== menuId
+    );
+
+    await cart.save();
+
+    await cart.populate({
+      path: "items.menuId",
+      select: "image name price quantity description",
+    });
+
+    const frontendData = cart.items.map((item) => ({
+      menuId: item.menuId ? item.menuId._id : null,
+      image: item.menuId ? item.menuId.image : null,
+      description: item.menuId ? item.menuId.description : null,
+      name: item.menuId ? item.menuId.name : null,
+      price: item.menuId ? item.menuId.price : null,
+      quantity: item.quantity,
+    }));
+
+    res.status(200).json({
+      success: true,
+      message: "Cart item deleted successfully.",
+      data: {
+        ...cart._doc,
+        items: frontendData,
+      },
+    });
+  } catch (error) {
+    console.error("Error while deleting the menu item in the cart:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error while deleting from the cart.",
+    });
+  }
+};
