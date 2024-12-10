@@ -49,7 +49,10 @@ export const addToCart = async (req, res) => {
 
 export const fetchCartItems = async (req, res) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
+    console.log("Request Headers:", req.headers);
+    console.log("Received request body:", req.params);
+
 
     if (!id) {
       return res.status(400).json({

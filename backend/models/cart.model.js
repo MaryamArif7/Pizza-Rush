@@ -10,7 +10,7 @@ items:[
     {
         menuId:{
             type:mongoose.Schema.Types.ObjectId,
-            ref:"MenuModel",
+            ref:"MenuModal",
             required:true,
         },
         quantity:{

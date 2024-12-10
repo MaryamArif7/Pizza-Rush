@@ -41,11 +41,13 @@ console.log(menuDetails);
         menuId: getMenuId,
         quantity: 1,
       })
-    ).then(() => {
-    
-        toast.success("Your Pizza is added to the Cart");
-      }
-    );
+    ) .then((data) => {
+      if (data?.payload?.success) {
+        dispatch(fetchCartItems(user?._id));
+        toast({
+          title: "Product is added to cart",
+        })}});
+ 
     
   }
 
