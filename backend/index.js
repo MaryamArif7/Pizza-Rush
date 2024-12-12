@@ -9,8 +9,7 @@ import MenuModal from "./models/menu.model.js"
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { menuRouter } from './routes/menu.route.js';
-
-
+import {addressRouter} from "./routes/address.route.js"
 const app = express();
 dotenv.config(); 
 
@@ -32,6 +31,7 @@ app.use('/images', express.static(path.join(__dirname, 'public/images')));
 app.use("/api/auth", authRouter);
 app.use("/api",authRouter);
 app.use("/api/menu",menuRouter);
+app.use("/api/shop",addressRouter);
 
 
 
