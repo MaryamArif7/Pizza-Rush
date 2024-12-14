@@ -11,12 +11,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { Sheet } from "../components/ui/sheet";
 import CartWrapper from "../components/cartWrapper";
 import { fetchCartItems } from "../redux/cartSlice";
+import { useToast } from "./ui/use-toast";
 const Nav = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [openCartSheet, setOpenCartSheet] = useState(false);
   const { cartItems } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
+  const { toast } = useToast();
   const handleLoginClick = () => {
     navigate("/register");
   };
@@ -34,17 +36,26 @@ const Nav = () => {
       <div className="flex-1">
         <ul className="flex justify-center gap-5">
           <li>
-            <Link className="font-lobster font-medium text-2xl" to="/">
+            <Link
+              to="/"
+              className="font-lobster font-medium text-2xl  hover:text-yellow-500 "
+            >
               Home
             </Link>
           </li>
           <li>
-            <Link className="font-lobster font-medium text-2xl" to="/contact">
+            <Link
+              className="font-lobster font-medium text-2xl hover:text-yellow-500 "
+              to="/Contact"
+            >
               Contact
             </Link>
           </li>
           <li>
-            <Link className="font-lobster font-medium text-2xl" to="/about">
+            <Link
+              className="font-lobster font-medium text-2xl hover:text-yellow-500 "
+              to="/AboutUs"
+            >
               About Us
             </Link>
           </li>
@@ -61,8 +72,9 @@ const Nav = () => {
                 onClick={() => setOpenCartSheet(true)}
                 className="relative"
               >
-                <ShoppingCartIcon className="h-8 w-8" />
-                <span className="absolute top-[-5px] right-[2px] font-bold text-sm">
+                <ShoppingCartIcon title="Add To Cart" className="h-8 w-8  hover:text-orange-400 " />
+
+                <span className="absolute top-[-10px] right-[2px] font-bold text-sm text-red-700">
                   {cartItems?.items?.length || 0}
                 </span>
                 <span className="sr-only">User cart</span>
@@ -79,17 +91,17 @@ const Nav = () => {
           </li>
           <li>
             <button>
-              <MagnifyingGlassIcon className="h-8 w-8" />
+              <MagnifyingGlassIcon title="Search what you want" className="h-8 w-8 hover:text-orange-600 " />
             </button>
           </li>
           <li>
             <button onClick={handleLoginClick}>
-              <ArrowRightOnRectangleIcon className="h-8 w-8" />
+              <ArrowRightOnRectangleIcon title="Login/Register" className="h-8 w-8 hover:text-orange-600 " />
             </button>
           </li>
           <li>
             <button>
-              <UserCircleIcon className="h-8 w-8" />
+              <UserCircleIcon title="Your Account" className="h-8 w-8 hover:text-orange-600 " />
             </button>
           </li>
         </ul>

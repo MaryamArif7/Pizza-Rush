@@ -1,11 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Minus, Plus, Trash } from "lucide-react";
 import { deleteCartItems, updateCartQuantity } from "../redux/cartSlice";
-import toast from "react-hot-toast";
+import { useToast } from "./ui/use-toast"
 function CartItemsContent({ cartItem }) {
   const { cartItems } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const { toast } = useToast();
+
   console.log("HELLO FROM CART ITEMS CONTENT", cartItem);
   console.log(
     " checking in cartitemcontent for Price:",

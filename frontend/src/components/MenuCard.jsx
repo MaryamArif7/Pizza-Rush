@@ -21,13 +21,13 @@ const MenuCard = ({ image, name, price, description, handleAddtoCart, handleGetM
           </div>
           <button
             onClick={() => handleAddtoCart(menu?._id)}
-            className="w-full py-2 bg-gradient-to-r from-yellow-400 to-red-600 text-lg rounded-lg hover:bg-red-700 mt-4"
+            className="w-full py-2  bg-gradient-to-r from-yellow-400 to-red-600 text-lg rounded-lg transition-all duration-300 hover:bg-gradient-to-r hover:from-red-600 hover:to-yellow-400 mt-4"
           >
             Add to Cart
           </button>
           <button
             onClick={() => handleGetMenuDetails(menu?._id)}
-            className="w-full py-2 bg-gradient-to-r from-yellow-400 to-red-600 text-lg rounded-lg hover:bg-red-700 mt-4"
+            className="w-full py-2 bg-gradient-to-r from-yellow-400 to-red-600 text-lg rounded-lg transition-all duration-300 hover:bg-gradient-to-r hover:from-red-600 hover:to-yellow-400 mt-4"
           >
             View Details
           </button>

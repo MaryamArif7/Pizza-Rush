@@ -1,13 +1,14 @@
-
-import pizza1 from '../assets/pizza-1.png';
-import pizza4 from '../assets/pizza-4.png';
-import Menu from './Menu';
-import Nav from './Nav'
-
+import pizza1 from "../assets/pizza-1.png";
+import pizza4 from "../assets/pizza-4.png";
+import Menu from "./Menu";
+import Nav from "./Nav";
+import Features from "./Features";
+import Customized from "./Customized";
+import Footer from "./Footer";
 const Home = () => {
   return (
     <>
-    <Nav />
+      <Nav />
       <div className="text-center">
         <h1 className="font-lobster text-2xl font-bold bg-gradient-to-r from-yellow-500 to-red-800 bg-clip-text text-transparent">
           Fresh, Hot & Fast
@@ -16,24 +17,36 @@ const Home = () => {
           From oven to doorstep, quality in every bite.
         </p>
         <p className="mt-3 font-lobster font-semibold">
-          At Pizza Rush, every pizza is a masterpiece. Made with fresh ingredients and a passion for flavor, <br />
-          pizzas are designed for every taste. Whether you want to explore bold new flavors, <br />
+          At Pizza Rush, every pizza is a masterpiece. Made with fresh
+          ingredients and a passion for flavor, <br />
+          pizzas are designed for every taste. Whether you want to explore bold
+          new flavors, <br />
           we’ve got the perfect pizza for you.
         </p>
- 
+
         <div className="flex items-start justify-between ">
           <div className="flex-1 flex justify-center">
             <img src={pizza1} className="w-3/4" alt="Pizza 1" />
-          </div> 
-          <button className="mx-4 px-8 py-4 bg-gradient-to-r from-yellow-400 to-red-600 text-lg rounded-lg hover:bg-red-700 mt-4">
+          </div>
+          <button className="mx-4 px-8 py-4 bg-gradient-to-r from-yellow-400 to-red-600 text-lg rounded-lg transition-all duration-300 hover:bg-gradient-to-r hover:from-red-600 hover:to-yellow-400 mt-4">
             Order Now
           </button>
+
           <div className="flex-1 flex justify-center">
             <img src={pizza4} className="w-3/4 " alt="Pizza 4" />
           </div>
         </div>
       </div>
       <Menu />
+      {/*
+      
+      
+      <Customized />
+      */}
+      <div className="mt-20">
+        <Features />
+      </div>
+      <Footer />
     </>
   );
 };

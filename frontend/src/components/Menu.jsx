@@ -5,12 +5,13 @@ import MenuDialog from "./MenuDialog";
 import { useSelector, useDispatch } from "react-redux";
 import { getMenuDetails } from "../redux/menuSlice";
 import { addToCart, fetchCartItems } from "../redux/cartSlice";
-import toast from "react-hot-toast";
+import { useToast } from "./ui/use-toast"
 
 const Menu = () => {
   const [menu, setMenu] = useState([]);
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
   const dispatch = useDispatch();
+  const { toast } = useToast();
   const { user } = useSelector((state) => state.auth);
   const { menuDetails } = useSelector((state) => state.menu);
 
@@ -70,7 +71,7 @@ console.log(menuDetails);
           <p className="text-center text-lg mt-5">We offer all types of Pizzas</p>
         </div>
         <div>
-          <div className="mt-16 grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-2 grid-cols-1 sm:gap-4 gap-14">
+          <div className="mt-16 grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-2 grid-cols-1 sm:gap-4 gap-14 ">
             {menu.map((item) => (
               <MenuCard
                 key={item._id}

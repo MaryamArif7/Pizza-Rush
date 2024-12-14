@@ -65,7 +65,7 @@ export default function Register() {
 
   return (
     <>
-      <h1>{page === 'register' ? 'Register' : 'Verify OTP'}</h1>
+      <h1 className='text-center font-extrabold pt-5 '>{page === 'register' ? 'Register' : 'Verify OTP'}</h1>
       <div className="bg-[url('/src/assets/login4.png')] bg-cover bg-center">
         <div className="container mx-auto">
           <Toaster position='top-center' reverseOrder={false}></Toaster>
@@ -84,7 +84,7 @@ export default function Register() {
                     <input name="email" {...formik.getFieldProps('email')} className="border-0 px-3 py-4 rounded-xl w-3/4 shadow-sm text-lg focus:outline-none" type="text" placeholder='Email*' />
                     <input name="username" {...formik.getFieldProps('username')} className="border-0 px-3 py-4 rounded-xl w-3/4 shadow-sm text-lg focus:outline-none" type="text" placeholder='Username*' />
                     <input name="password" {...formik.getFieldProps('password')} className="border-0 px-3 py-4 rounded-xl w-3/4 shadow-sm text-lg focus:outline-none" type="password" placeholder='Password*' />
-                    <button type="submit" className="border bg-indigo-500 w-3/4 py-4 rounded-lg text-gray-50 text-xl shadow-sm text-center hover:bg-[#ff6a6a]">Submit</button>
+                    <button type="submit" className="border bg-orange-600 w-3/4 py-4 rounded-lg text-gray-50 text-xl shadow-sm text-center hover:bg-red-600">Submit</button>
 
                     <span className="text-center text-gray-500">
                       Already have an account? <Link className="text-linkBlue" to="/login">Login</Link>

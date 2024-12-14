@@ -74,7 +74,7 @@ const dispatch=useDispatch();
               <div className="textbox flex flex-col items-center gap-6">
                   <input {...formik.getFieldProps('username')} className="border-2 px-5 py-4 rounded-xl w-3/4 shadow-sm text-lg focus:outline-none" type="text" placeholder='Username' />
                   <input {...formik.getFieldProps('password')} className="border-0 px-5 py-4 rounded-xl w-3/4 shadow-sm text-lg focus:outline-none" type="text" placeholder='Password' />
-                  <button className="border bg-indigo-500 w-3/4 py-4 rounded-lg text-gray-50 text-xl shadow-sm text-center hover:bg-[#ff6a6a]" type='submit'>Sign In</button>
+                  <button className="border bg-orange-600 w-3/4 py-4 rounded-lg text-gray-50 text-xl shadow-sm text-center hover:bg-red-600" type='submit'>Sign In</button>
                
               </div>
 

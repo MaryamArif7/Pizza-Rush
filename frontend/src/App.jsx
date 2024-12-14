@@ -3,6 +3,8 @@ import Register from "./components/Register";
 import PageNotFound from "./components/PageNotFound";
 import Home from "./components/Home";
 import Login from "./components/Login"
+import Contact from "./pages/Conatact";
+import AboutUs from "./pages/AboutUs"
 //import Menu from "./components/Menu";
 const router = createBrowserRouter([
  
@@ -26,6 +28,14 @@ const router = createBrowserRouter([
   {
     path: "*",
     element: <PageNotFound />,
+  },
+  {
+    path:"/Contact",
+    element:<Contact />
+  },
+  {
+    path:"/AboutUs",
+    element:<AboutUs />
   },
 ]);
 
