@@ -13,8 +13,9 @@ Some Features are compelted ,still working on few of them.
 - **Feature 2**:  Secure payment gateway integration.
 - **Feature 3**:- Customizable pizza options with a variety of toppings.(currently working)
 - **Feature 4**:- OTP based authentication,users can reciver email upon ordering ,and creating an account
- ## A small note:
-I am currently exploring WebSockets for real-time updates and Kafka as the event broker for the event-driven architecture. This will be used to implement order status updates, which will be displayed to the user, along with integration with the Google Maps API. All of this I'm doing is out of curiosity. I'm not working on some unique idea but just exploring how real-world applications work while still learning full-stack development.
+- 
+ ## A small note: 
+As of December 2024, I am currently exploring WebSockets for real-time updates and Kafka as the event broker for the event-driven architecture. This will be used to implement order status updates, which will be displayed to the user, along with integration with the Google Maps API. All of this I'm doing is out of curiosity. I'm not working on some unique idea but just exploring how real-world applications work while still learning full-stack development. I have learned so much while working on this project, from modeling the data to writing efficient controller functions, and I have explored many open-source repositories.
 
 ## Technologies Used
 
