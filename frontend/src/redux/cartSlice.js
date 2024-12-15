@@ -31,11 +31,11 @@ export const fetchCartItems = createAsyncThunk(
 );
 export const updateCartQuantity = createAsyncThunk(
   "cart/updateCartQuantity",
-  async ({ userId, menuId, quantity }) => {
+  async ({ id, menuId, quantity }) => {
     const response = await axios.put(
       "http://localhost:5000/api/menu/cart/update-cart",
       {
-        userId,
+        id,
         menuId,
         quantity,
       }
@@ -47,6 +47,7 @@ export const updateCartQuantity = createAsyncThunk(
 export const deleteCartItems = createAsyncThunk(
   "cart/deleteCartItems",
   async ({ id, menuId }) => {
+    console.log("from delete stoore handle", id, menuId);
     const response = await axios.post(
       `http:localhost:5000/api/menu/cart/${id}/${menuId}`
     );

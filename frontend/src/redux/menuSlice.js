@@ -5,6 +5,7 @@ const initialState = {
   menuDetails:null,
   isLoading: false,
   error: null,
+
 };
 
 export const getMenuDetails = createAsyncThunk(

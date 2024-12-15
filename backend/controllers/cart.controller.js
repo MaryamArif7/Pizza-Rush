@@ -24,7 +24,8 @@ export const addToCart = async (req, res) => {
     if (!cart) {
       cart = new Cart({ id, items: [] });
     }
-
+//this is basically checking if the same item with the same menuid i salready prent in the cart
+//cart.items ->cart ->model,items ->an array inside of the cart 
     const currentIndex = cart.items.findIndex((item) => item.menuId.toString() === menuId);
     if (currentIndex === -1) {
       cart.items.push({ menuId, quantity });
@@ -192,7 +193,7 @@ export const deleteCartItem = async (req, res) => {
     }
 
     cart.items = cart.items.filter(
-      (item) => item.menuId.toString() !== menuId
+      (item) => item.menuId._id.toString() !== menuId
     );
 
     await cart.save();

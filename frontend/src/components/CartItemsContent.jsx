@@ -21,7 +21,10 @@ function CartItemsContent({ cartItem }) {
 
     if (getCartItems.length) {
       const indexOfCurrentCartItem = getCartItems.findIndex(
+        //item.menuId
+        //showing undefined with _id
         (item) => item.menuId === getCartItem?.menuId
+       
       );
 
       if (indexOfCurrentCartItem > -1) {
@@ -44,7 +47,7 @@ function CartItemsContent({ cartItem }) {
             : getCartItem?.quantity - 1,
       })
     ).then((data) => {
-      if (data?.payload?.sucess) {
+      if (data?.payload?.success) {
         toast({
           title: "Cart Item is updated Successfully",
         });
@@ -52,17 +55,23 @@ function CartItemsContent({ cartItem }) {
     });
   }
 
-  function handleCartItemDelete(cartItemto) {
-    dispatch(
-      deleteCartItems({ userId: user?._id, menuId: cartItemto?.menuId })
-    ).then((data) => {
-      if (data?.payload?.sucess) {
-        toast({
-          title: "Cart itme is deletd sucessfully",
-        });
-      }
-    });
-  }
+  
+    function handleCartItemDelete(getCartItem) {
+      console.log("from delete handle", user?._id, getCartItem?.menuId);
+      dispatch(
+        deleteCartItems({ userId: user?._id, menuId: getCartItem?.menuId })
+      ).then((data) => {
+        if (data?.payload?.success) {
+          toast({
+            title: "Cart item is  deleted successfully",
+          });
+        }
+      });
+    
+    
+    }
+    
+  
 
   return (
     <div className="flex items-center space-x-4">
