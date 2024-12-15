@@ -18,7 +18,7 @@ function ShoppingCheckout() {
     0
   );
   const stripePromise = loadStripe(
-	"pk_test_51KZYccCoOZF2UhtOwdXQl3vcizup20zqKqT9hVUIsVzsdBrhqbUI2fE0ZdEVLdZfeHjeyFXtqaNsyCJCmZWnjNZa00PzMAjlcL"
+"pk_test_51PndnzALl3DH2NktDNpr3OFgQVntLUxLN3dqndao2GgUGQXEjm9Hftf2QBZvsYhAm15ydz32mR6gMRJPrakqcyke00lJS1pzWw"
 );
   const handleInitiatePaypalPayment=async()=> {
     if (cartItems.length === 0) {
@@ -39,11 +39,11 @@ function ShoppingCheckout() {
     }
 
     const orderData = {
-      userId: user?.id,
+      userId: user?._id,
       cartId: cartItems?._id,
       cartItems: cartItems.items.map((cartItem) => ({
-        productId: cartItem?.productId,
-        title: cartItem?.title,
+        menuId: cartItem?.productId,
+        name: cartItem?.name,
         image: cartItem?.image,
         price:cartItem?.price,
         quantity:cartItem?.quantity,
@@ -56,7 +56,7 @@ function ShoppingCheckout() {
         notes: currentSelectedAddress?.notes,
       },
       orderStatus: "pending",
-      paymentMethod: "paypal",
+      paymentMethod: "Card",
       paymentStatus: "pending",
       totalAmount: totalCartAmount,
       orderDate: new Date(),
@@ -65,7 +65,7 @@ function ShoppingCheckout() {
       payerId: "",
     };
     const stripe = await stripePromise;
-    const res = await axios.post("/payments/create-checkout-session", {
+    const res = await axios.post("/api/payment/checkoutSession", {
         order: orderData,
 
     });
