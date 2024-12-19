@@ -10,13 +10,17 @@ function ShoppingCheckout() {
   const { cartItems } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
   const [currentSelectedAddress, setCurrentSelectedAddress] = useState(null);
-  const [isPaymentStart, setIsPaymemntStart] = useState(false);
+  const [isPaymentStart, setIsPaymentStart] = useState(false);
   const { toast } = useToast();
-  const totalCartAmount = cartItems.reduce(
-    (sum, currentItem) =>
-      sum + (currentItem?.price || 0) * (currentItem?.quantity || 0),
-    0
-  );
+
+  const totalCartAmount = Array.isArray(cartItems)
+  ? cartItems.reduce(
+      (sum, currentItem) =>
+        sum + (currentItem?.price || 0) * (currentItem?.quantity || 0),
+      0
+    )
+  : 0;
+
   const stripePromise = loadStripe(
 "pk_test_51PndnzALl3DH2NktDNpr3OFgQVntLUxLN3dqndao2GgUGQXEjm9Hftf2QBZvsYhAm15ydz32mR6gMRJPrakqcyke00lJS1pzWw"
 );
@@ -77,7 +81,7 @@ function ShoppingCheckout() {
 
     if (result.error) {
         console.error("Error:", result.error);
-        setIsPaymemntStart(false);
+        setIsPaymentStart(false);
     }
    
   }
@@ -86,9 +90,7 @@ function ShoppingCheckout() {
 
   return (
     <div className="flex flex-col">
-      <div className="relative h-[300px] w-full overflow-hidden">
-        <img src={img} className="h-full w-full object-cover object-center" />
-      </div> 
+       
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-5 p-5">
         <Address
           selectedId={currentSelectedAddress}

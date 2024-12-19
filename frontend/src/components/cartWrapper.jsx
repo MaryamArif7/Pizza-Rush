@@ -32,7 +32,7 @@ function CartWrapper({ cartItems, setOpenCartSheet }) {
       </div>
       <button
         onClick={() => {
-          navigate("/shop/checkout");
+          navigate("/checkout");
           setOpenCartSheet(false);
         }}
         className="w-full mt-6 bg-yellow-500 text-white py-2 rounded hover:bg-red-600"

@@ -4,7 +4,8 @@ import PageNotFound from "./components/PageNotFound";
 import Home from "./components/Home";
 import Login from "./components/Login"
 import Contact from "./pages/Conatact";
-import AboutUs from "./pages/AboutUs"
+import AboutUs from "./pages/AboutUs";
+import ShoppingCheckout from "./pages/checkout";
 //import Menu from "./components/Menu";
 const router = createBrowserRouter([
  
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
   {
     path:"/AboutUs",
     element:<AboutUs />
+  },
+  {
+    path:"/checkout",
+    element:<ShoppingCheckout/>
   },
 ]);
 

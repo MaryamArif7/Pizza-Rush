@@ -1,22 +1,21 @@
 import { useEffect, useState } from "react";
-import CommonForm from "../common/form";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import CommonForm from "./common/form";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { addressFormControls } from "@/config";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  addNewAddress,
+  newAddress,
   deleteAddress,
-  editaAddress,
-  fetchAllAddresses,
-} from "@/store/shop/address-slice";
-import AddressCard from "./address-card";
-import { useToast } from "../ui/use-toast";
+  editAddress,
+  fetchAddress,
+} from "../redux/addressSlice";
+import AddressCard from "./AddressCard";
+import { useToast } from "./ui/use-toast";
 
 const initialAddressFormData = {
   address: "",
   city: "",
   phone: "",
-  pincode: "",
   notes: "",
 };
 
@@ -25,13 +24,14 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
   const [currentEditedId, setCurrentEditedId] = useState(null);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const { addressList } = useSelector((state) => state.shopAddress);
+  const { addressInfo , isLoading } = useSelector((state) => state.address);
+  console.log("from address",addressInfo) ;
   const { toast } = useToast();
 
   function handleManageAddress(event) {
     event.preventDefault();
 
-    if (addressList.length >= 3 && currentEditedId === null) {
+    if (addressInfo.length >= 3 && currentEditedId === null) {
       setFormData(initialAddressFormData);
       toast({
         title: "You can add max 3 addresses",
@@ -43,14 +43,14 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
 
     currentEditedId !== null
       ? dispatch(
-          editaAddress({
+          editAddress({
             userId: user?.id,
             addressId: currentEditedId,
             formData,
           })
         ).then((data) => {
           if (data?.payload?.success) {
-            dispatch(fetchAllAddresses(user?.id));
+            dispatch(fetchAddress(user?.id));
             setCurrentEditedId(null);
             setFormData(initialAddressFormData);
             toast({
@@ -59,13 +59,13 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
           }
         })
       : dispatch(
-          addNewAddress({
+          newAddress({
             ...formData,
             userId: user?.id,
           })
         ).then((data) => {
           if (data?.payload?.success) {
-            dispatch(fetchAllAddresses(user?.id));
+            dispatch(fetchAddress(user?.id));
             setFormData(initialAddressFormData);
             toast({
               title: "Address added successfully",
@@ -79,7 +79,7 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
       deleteAddress({ userId: user?.id, addressId: getCurrentAddress._id })
     ).then((data) => {
       if (data?.payload?.success) {
-        dispatch(fetchAllAddresses(user?.id));
+        dispatch(fetchAddress(user?.id));
         toast({
           title: "Address deleted successfully",
         });
@@ -94,7 +94,6 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
       address: getCuurentAddress?.address,
       city: getCuurentAddress?.city,
       phone: getCuurentAddress?.phone,
-      pincode: getCuurentAddress?.pincode,
       notes: getCuurentAddress?.notes,
     });
   }
@@ -106,25 +105,31 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
   }
 
   useEffect(() => {
-    dispatch(fetchAllAddresses(user?.id));
+    dispatch(fetchAddress(user?.id));
   }, [dispatch]);
 
-  console.log(addressList, "addressList");
+  console.log(addressInfo, "addressList");
+
+  if (isLoading) {
+    return <p>Loading addresses...</p>; // Show loading state while fetching
+  }
 
   return (
     <Card>
       <div className="mb-5 p-3 grid grid-cols-1 sm:grid-cols-2  gap-2">
-        {addressList && addressList.length > 0
-          ? addressList.map((singleAddressItem) => (
-              <AddressCard
-                selectedId={selectedId}
-                handleDeleteAddress={handleDeleteAddress}
-                addressInfo={singleAddressItem}
-                handleEditAddress={handleEditAddress}
-                setCurrentSelectedAddress={setCurrentSelectedAddress}
-              />
-            ))
-          : null}
+        {addressInfo && addressInfo.length > 0 ? (
+          addressInfo.map((singleAddressItem) => (
+            <AddressCard
+              selectedId={selectedId}
+              handleDeleteAddress={handleDeleteAddress}
+              addressInfo={singleAddressItem}
+              handleEditAddress={handleEditAddress}
+              setCurrentSelectedAddress={setCurrentSelectedAddress}
+            />
+          ))
+        ) : (
+          <p>No addresses available</p> // If no addresses are found
+        )}
       </div>
       <CardHeader>
         <CardTitle>

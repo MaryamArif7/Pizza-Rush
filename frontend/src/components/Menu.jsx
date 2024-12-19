@@ -64,25 +64,27 @@ console.log(menuDetails);
   return (
     <>
       <div className="mt-20">
-        <div>
-          <h1 className="text-center text-6xl font-lobster font-extrabold bg-gradient-to-r from-yellow-500 to-red-800 bg-clip-text text-transparent">
-            Explore Menu
-          </h1>
-          <p className="text-center text-lg mt-5">We offer all types of Pizzas</p>
-        </div>
-        <div>
-          <div className="mt-16 grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-2 grid-cols-1 sm:gap-4 gap-14 ">
-            {menu.map((item) => (
-              <MenuCard
-                key={item._id}
-                {...item}
-                handleAddtoCart={handleAddtoCart}
-                handleGetMenuDetails={handleGetMenuDetails}
-                menu={item}
-              />
-            ))}
-          </div>
-        </div>
+      <div>
+  <h1 className="text-center text-6xl font-lobster font-extrabold bg-gradient-to-r from-yellow-500 to-red-800 bg-clip-text text-transparent">
+    Explore Menu
+  </h1>
+  <p className="text-center text-lg mt-5">We offer all types of Pizzas</p>
+</div>
+
+<div>
+  <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 sm:gap-4 gap-14">
+    {menu.map((item) => (
+      <MenuCard
+        key={item._id}
+        {...item}
+        handleAddtoCart={handleAddtoCart}
+        handleGetMenuDetails={handleGetMenuDetails}
+        menu={item}
+      />
+    ))}
+  </div>
+</div>
+
         {menuDetails && (
           <MenuDialog
             open={openDetailsDialog}
