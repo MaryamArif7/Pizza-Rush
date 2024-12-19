@@ -65,7 +65,7 @@ const Nav = () => {
       </ul>
     </div>
   
-    {/* Hamburger Icon for Mobile */}
+
     <div className="sm:hidden flex items-center">
       <button
         onClick={() => setIsMenuOpen(!isMenuOpen)}
